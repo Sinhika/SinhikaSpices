@@ -10,13 +10,13 @@ import net.minecraft.item.ItemTool;
 public class ItemSpud extends ItemTool {
 	
 	/** an array of the blocks this bark spud is effective against */
-    public static final Block[] blocksEffectiveAgainst = new Block[] {Block.wood};
+    public static final Block[] blocksEffectiveAgainst = 
+    		new Block[] {Block.wood, Spices.barkBlock};
 
 	public ItemSpud(int par1, EnumToolMaterial par3EnumToolMaterial) 
 	{
 		super(par1, 2.0F, par3EnumToolMaterial, blocksEffectiveAgainst);
 		setCreativeTab(Spices.customTabSpices);
-		// TODO Auto-generated constructor stub
 	}
 		
 	@Override

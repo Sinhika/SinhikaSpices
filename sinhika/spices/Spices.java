@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemAxe;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
@@ -58,8 +59,10 @@ public class Spices {
 
      /** tools */
     private static Item [] toolItems;
-    private static final String[] toolTypes = {"stone", "iron", "gold", "diamond"};  // TODO add wood
-    private static final EnumToolMaterial[] toolMaterials = {EnumToolMaterial.STONE, EnumToolMaterial.IRON, EnumToolMaterial.GOLD, EnumToolMaterial.EMERALD};
+    private static final String[] toolTypes = {"wood", "stone", "iron", "gold", "diamond"};  // TODO add wood
+    private static final EnumToolMaterial[] toolMaterials = 
+    	{EnumToolMaterial.WOOD, EnumToolMaterial.STONE, EnumToolMaterial.IRON, EnumToolMaterial.GOLD, EnumToolMaterial.EMERALD};
+    private static int [] harvestLevels = { 0, 1, 2, 0, 3};
     
     /** Says where the client and server 'proxy' code is loaded. */
     @SidedProxy(clientSide="sinhika.spices.client.ClientProxy", 
@@ -158,13 +161,20 @@ public class Spices {
             
             // tool items
             toolItems = new Item [toolTypes.length];
+            
             for (int i=0; i < toolTypes.length; i++) {
             	toolItems[i] = new ItemSpud(ModInfo.toolItemID[i], toolMaterials[i]);
             	toolItems[i].setUnlocalizedName(toolTypes[i] + "_spud");
             	toolItems[i].func_111206_d(ModInfo.ID + ":" + toolTypes[i] + "_spud");
             	LanguageRegistry.addName(toolItems[i], 
             						     toolTypes[i].substring(0,1).toUpperCase() + toolTypes[i].substring(1) + " Bark Spud");
+            	MinecraftForge.setToolClass(toolItems[i], "spud", harvestLevels[i]);
             } // end for
+ 
+            for (Block block : ItemSpud.blocksEffectiveAgainst)
+            {
+                MinecraftForge.setBlockHarvestLevel(block, "spud", 0);
+            }
                               
             this.addRecipes();
      } // end load()
@@ -179,7 +189,7 @@ public class Spices {
      */
     protected void addRecipes()  {
     	String[] spudPattern = new String [] {"X#X","X#X", " # " };
-    	Object[] recipeItems = new  Object[] {Block.cobblestone, Item.ingotIron, Item.ingotGold, Item.diamond};
+    	Object[] recipeItems = new  Object[] {Block.planks, Block.cobblestone, Item.ingotIron, Item.ingotGold, Item.diamond};
         String[] blockPattern = new String [] {"XXX", "XXX", "XXX"};
         
         // spice test recipes
