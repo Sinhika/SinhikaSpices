@@ -14,6 +14,7 @@ import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -41,7 +42,7 @@ public class Spices {
     public static Logger log;
     
     /** custom creative-mode tab object */
-    public static CreativeTabs customTabSpices = new SpiceTab();
+    public static CreativeTabs customTabSpices;
     
     /** bark wood types used in this module */
     public final static String[] barkTypes = {"oak", "spruce", "birch", "cinnamon"};
@@ -63,11 +64,13 @@ public class Spices {
     private static final EnumToolMaterial[] toolMaterials = 
     	{EnumToolMaterial.WOOD, EnumToolMaterial.STONE, EnumToolMaterial.IRON, EnumToolMaterial.GOLD, EnumToolMaterial.EMERALD};
     private static int [] harvestLevels = { 0, 1, 2, 0, 3};
+    private static CraftingHandler spiceCraftingHandler;
     
     /** Says where the client and server 'proxy' code is loaded. */
     @SidedProxy(clientSide="sinhika.spices.client.ClientProxy", 
     			serverSide="sinhika.spices.CommonProxy")
     public static CommonProxy proxy;
+
    
     /** preInit phase actions go here, such as reading config files and setting up logger. */
     @EventHandler
@@ -120,6 +123,10 @@ public class Spices {
     	
     	// save configuration back to file
     	config.save();
+    	
+    	// create handlers
+    	customTabSpices = new SpiceTab();
+    	spiceCraftingHandler = new CraftingHandler();
     } // end preInit()
    
     /** Load phase actions go here, such as creating items & blocks, adding recipes, etc. */
@@ -175,7 +182,7 @@ public class Spices {
             {
                 MinecraftForge.setBlockHarvestLevel(block, "spud", 0);
             }
-                              
+            GameRegistry.registerCraftingHandler(spiceCraftingHandler);                  
             this.addRecipes();
      } // end load()
    
@@ -199,13 +206,14 @@ public class Spices {
             GameRegistry.addRecipe(new ItemStack(toolItems[i]), new Object[] {spudPattern, '#', Item.stick, 'X', recipeItems[i]});
         } // end for i
         
-        // proxy for peeling cinnamon bark
-        // TODO use bark spud or axe in recipe. (not consumed)
-        ItemStack cobbleStack = new ItemStack(Block.cobblestone);
+        // peeling cinnamon bark
         for (int i = 0; i < barkItems.length; i++) {
-        	GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(barkItems[i], 8), 
-					cobbleStack, new ItemStack(Block.wood, 1, i)));
-         }
+        	for (int j=0; j < toolItems.length; j++) {
+        		GameRegistry.addRecipe(
+        				new ShapelessOreRecipe(new ItemStack(barkItems[i], harvestLevels[j]+3), 
+        				toolItems[j], new ItemStack(Block.wood, 1, i)));
+        	} // end-for j
+        } // end-for i
         
         // making & unmaking bark bundles
         for (int i=0; i < barkItems.length; i++) {
