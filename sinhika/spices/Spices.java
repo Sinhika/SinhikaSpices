@@ -60,7 +60,7 @@ public class Spices {
 
      /** tools */
     public static Item [] toolItems;
-    private static final String[] toolTypes = {"wood", "stone", "iron", "gold", "diamond"};  // TODO add wood
+    private static final String[] toolTypes = {"wood", "stone", "iron", "gold", "diamond"};  
     private static final EnumToolMaterial[] toolMaterials = 
     	{EnumToolMaterial.WOOD, EnumToolMaterial.STONE, EnumToolMaterial.IRON, EnumToolMaterial.GOLD, EnumToolMaterial.EMERALD};
     public static int [] harvestLevels = { 0, 1, 2, 0, 3};
@@ -195,7 +195,7 @@ public class Spices {
      * 
      */
     protected void addRecipes()  {
-    	String[] spudPattern = new String [] {"X#X","X#X", " # " };
+    	String[] spudPattern = new String [] {" #X"," # ", " # " };
     	Object[] recipeItems = new  Object[] {Block.planks, Block.cobblestone, Item.ingotIron, Item.ingotGold, Item.diamond};
         String[] blockPattern = new String [] {"XXX", "XXX", "XXX"};
         
@@ -219,10 +219,17 @@ public class Spices {
         // making & unmaking bark bundles
         for (int i=0; i < barkItems.length; i++) {
         	ItemStack barkBlockStack = new ItemStack(barkBlock, 1, i);
+        	// OreDict versions
         	GameRegistry.addRecipe(new ShapedOreRecipe(barkBlockStack, 
 					        	   new Object[] {blockPattern, 'X', oreDictBarkNames[i]}));
         	GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(barkItems[i], 9), 
         						   oreDictBarkBlockNames[i]));
-        }
-    }
+        	
+        	// in-game item/block versions
+        	GameRegistry.addRecipe(new ShapedOreRecipe(barkBlockStack, 
+		        	   new Object[] {blockPattern, 'X', barkItems[i]}));
+        	GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(barkItems[i], 9), 
+        			barkBlockStack));
+        } // end-for
+    } // end addRecipes()
 } // end class
