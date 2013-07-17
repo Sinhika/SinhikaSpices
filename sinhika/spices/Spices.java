@@ -54,16 +54,16 @@ public class Spices {
     private static final String[] barkBlockNames = {"Bundle of Oak Bark", "Bundle of Spruce Bark", "Bundle of Birch Bark", "Bundle of Cinnamon" };
    	
     /** bark items  */
-    private static Item[] barkItems;
+    public static Item[] barkItems;
     public static String[] oreDictBarkNames;
     private static final String[] barkNames = {"Oak Bark", "Spruce Bark", "Birch Bark", "Cinnamon Sticks" };
 
      /** tools */
-    private static Item [] toolItems;
+    public static Item [] toolItems;
     private static final String[] toolTypes = {"wood", "stone", "iron", "gold", "diamond"};  // TODO add wood
     private static final EnumToolMaterial[] toolMaterials = 
     	{EnumToolMaterial.WOOD, EnumToolMaterial.STONE, EnumToolMaterial.IRON, EnumToolMaterial.GOLD, EnumToolMaterial.EMERALD};
-    private static int [] harvestLevels = { 0, 1, 2, 0, 3};
+    public static int [] harvestLevels = { 0, 1, 2, 0, 3};
     private static CraftingHandler spiceCraftingHandler;
     
     /** Says where the client and server 'proxy' code is loaded. */
@@ -206,12 +206,13 @@ public class Spices {
             GameRegistry.addRecipe(new ItemStack(toolItems[i]), new Object[] {spudPattern, '#', Item.stick, 'X', recipeItems[i]});
         } // end for i
         
-        // peeling cinnamon bark
+        // peeling bark
         for (int i = 0; i < barkItems.length; i++) {
         	for (int j=0; j < toolItems.length; j++) {
         		GameRegistry.addRecipe(
         				new ShapelessOreRecipe(new ItemStack(barkItems[i], harvestLevels[j]+3), 
-        				toolItems[j], new ItemStack(Block.wood, 1, i)));
+        				new ItemStack(toolItems[j], 1, OreDictionary.WILDCARD_VALUE), 
+        				new ItemStack(Block.wood, 1, i)));
         	} // end-for j
         } // end-for i
         
