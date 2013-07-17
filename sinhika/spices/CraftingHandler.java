@@ -35,7 +35,6 @@ public class CraftingHandler implements ICraftingHandler {
 			// is there even an item in this slot?
 			if (craftMatrix.getStackInSlot(i) != null) {
 				ItemStack j = craftMatrix.getStackInSlot(i);
-				Spices.log.info("Slot " + i + " has an object");
 				// is it a spud?
 				if (j.getItem() != null && j.getItemName().endsWith("_spud")) {
 					Spices.log.info("Item is " + j.getItemName() + "(#" + j.itemID + ")");

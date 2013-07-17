@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumToolMaterial;
@@ -21,8 +22,8 @@ import net.minecraft.world.World;
 public class ItemSpud extends ItemTool {
 	
 	/** an array of the blocks this bark spud is effective against */
-    public static final Block[] blocksEffectiveAgainst = 
-    		new Block[] {Block.wood, Spices.barkBlock};
+    public static final Block[] blocksEffectiveAgainst = {Block.wood, Spices.barkBlock};
+
 
     /** constructor for ItemSpud
      * 
@@ -35,15 +36,7 @@ public class ItemSpud extends ItemTool {
 		setCreativeTab(Spices.customTabSpices);
 	}
 		
-	/** 
-	 * @see net.minecraft.item.Item#canHarvestBlock(net.minecraft.block.Block)
-	 */
-	@Override
-	public boolean canHarvestBlock(Block par1Block) {
-		// return super.canHarvestBlock(par1Block);
-		return par1Block.blockID == Block.wood.blockID || par1Block.blockID == Spices.barkBlock.blockID;
-	}
-
+	
 	/**
 	 * @see net.minecraft.item.Item#onBlockStartBreak(net.minecraft.item.ItemStack, int, int, int, net.minecraft.entity.player.EntityPlayer)
 	 */
@@ -55,11 +48,13 @@ public class ItemSpud extends ItemTool {
 	            return false;
 	      }
 	      int id = player.worldObj.getBlockId(x, y, z);
-	      int metadata = player.worldObj.getBlockMetadata(x, y, z);
 	      
 	      if (id == Block.wood.blockID || id == Spices.barkBlock.blockID) 
 	      {
-	          ArrayList<ItemStack> drops = getBarkPeeled(player.worldObj, id, metadata, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, itemstack));
+	    	  int metadata = Block.blocksList[id].getDamageValue(player.worldObj, x, y, z);
+	    	  
+	          ArrayList<ItemStack> drops = 
+	        		  getBarkPeeled(player.worldObj, id, metadata, EnchantmentHelper.getEnchantmentLevel(Enchantment.fortune.effectId, itemstack));
 
 	          Random rand = new Random();
               for(ItemStack stack : drops)
@@ -76,6 +71,8 @@ public class ItemSpud extends ItemTool {
 
               itemstack.damageItem(1, player);
               player.addStat(StatList.mineBlockStatArray[id], 1);
+    	      player.worldObj.destroyBlock(x, y, z, false);
+    	      return true;
 	      }
 	      return false;
 	} // end onBlockStartBreak()
@@ -108,6 +105,31 @@ public class ItemSpud extends ItemTool {
 	} // end getBarkPeeled()
 	
 	
+//	/* (non-Javadoc)
+//	 * @see net.minecraft.item.ItemTool#onBlockDestroyed(net.minecraft.item.ItemStack, net.minecraft.world.World, int, int, int, int, net.minecraft.entity.EntityLivingBase)
+//	 */
+//	@Override
+//	public boolean onBlockDestroyed(ItemStack par1ItemStack, World world,
+//			int id, int x, int y, int z,
+//			EntityLivingBase player) 
+//	{
+//	      int metadata = player.worldObj.getBlockMetadata(x, y, z);
+//	      super.onBlockDestroyed(par1ItemStack, world, id, x, y, z, player);
+//
+//	      return false;
+//	}
+
+
+	/* (non-Javadoc)
+	 * @see net.minecraft.item.Item#canHarvestBlock(net.minecraft.block.Block)
+	 */
+	@Override
+	public boolean canHarvestBlock(Block par1Block) {
+		return false;
+	}
+
+
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {

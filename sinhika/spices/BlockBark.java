@@ -10,10 +10,12 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
 
 public class BlockBark extends Block {
 	/** The type of tree this block came from. */
     private static final String[] iconString = new String [] {"log_oak", "log_spruce", "log_birch", ModInfo.ID + ":log_cinnamon"};
+    private static int ANDLIMIT = 3; // change if number of Spices.barkTypes changes.
     
     @SideOnly(Side.CLIENT)
     private Icon[] iconArray;
@@ -57,10 +59,26 @@ public class BlockBark extends Block {
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List subItems)
     {
-		for (int i=0; i < 4; i++) {
+		for (int i=0; i < Spices.barkTypes.length; i++) {
 			subItems.add(new ItemStack(par1, 1, i));
 		}
     } // end getSubBlocks()
+    
+	/* (non-Javadoc)
+	 * @see net.minecraft.block.Block#getDamageValue(net.minecraft.world.World, int, int, int)
+	 */
+	@Override
+	public int getDamageValue(World par1World, int par2, int par3, int par4) {
+		return this.limitToValidMetadata(par1World.getBlockMetadata(par2, par3, par4));
+	}
+
+	/**
+     * returns a number between 0 and ANDLIMIT
+     */
+    public static int limitToValidMetadata(int par0)
+    {
+        return par0 & ANDLIMIT;
+    }
     
 	@Override
 	@SideOnly(Side.CLIENT)
