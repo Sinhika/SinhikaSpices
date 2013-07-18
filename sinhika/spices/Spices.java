@@ -32,7 +32,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  *
  */
 @Mod(modid=ModInfo.ID, name=ModInfo.NAME, version=ModInfo.VERSION)
-@NetworkMod(clientSideRequired=true, serverSideRequired=true)
+@NetworkMod(channels = {ModInfo.CHANNEL}, clientSideRequired=true, serverSideRequired=true, 
+						packetHandler = PacketHandler.class)
 public class Spices {
     /** The instance of your mod that Forge uses. */
     @Instance(ModInfo.ID)
@@ -100,7 +101,7 @@ public class Spices {
     	// get block IDs
     	ModInfo.barkBlockID = 
     			config.getBlock("barkBlockID", ModInfo.DEFAULT_BLOCKID, "block ID for bark").getInt();
-    	log.info("barkBlockID=" + ModInfo.barkBlockID);
+    	log.finer("barkBlockID=" + ModInfo.barkBlockID);
     	
     	// get item IDs
     	ModInfo.barkItemID  = new int [barkTypes.length];
@@ -108,7 +109,7 @@ public class Spices {
     		String cfgKey = barkTypes[i] + "BarkItemID";
     		ModInfo.barkItemID[i] = 
     				config.getItem(cfgKey, ModInfo.DEFAULT_BASE_ITEMID + i).getInt();
-    		log.info("barkItemID[" + i + "]=" + cfgKey + "=" + ModInfo.barkItemID[i]);
+    		log.finer("barkItemID[" + i + "]=" + cfgKey + "=" + ModInfo.barkItemID[i]);
     	}
     	
     	// get tool item IDs
@@ -118,7 +119,7 @@ public class Spices {
     		ModInfo.toolItemID[i] =
     				config.getItem("tools", cfgKey, 
     							  ModInfo.DEFAULT_BASE_ITEMID + barkTypes.length + i).getInt();
-    		log.info("toolItem[" + i + "]=" + cfgKey + "=" + ModInfo.toolItemID[i]);
+    		log.finer("toolItem[" + i + "]=" + cfgKey + "=" + ModInfo.toolItemID[i]);
     	}
     	
     	// save configuration back to file
@@ -143,7 +144,7 @@ public class Spices {
             	LanguageRegistry.addName(barkBlockStack, barkBlockNames[i]);
             	oreDictBarkBlockNames[i] = "wood" + capBarkTypes[i] + "BarkBlock";
             	OreDictionary.registerOre(oreDictBarkBlockNames[i], barkBlockStack);
-            	log.info(oreDictBarkBlockNames[i] + " registered with OreDictionary");
+            	log.fine(oreDictBarkBlockNames[i] + " registered with OreDictionary");
             }                     
             MinecraftForge.setBlockHarvestLevel(barkBlock, "axe", 0);
             
@@ -162,7 +163,7 @@ public class Spices {
             	LanguageRegistry.addName(barkItems[i], barkNames[i]);
             	oreDictBarkNames[i] = "wood" + capBarkTypes[i] + "Bark";
             	OreDictionary.registerOre(oreDictBarkNames[i], new ItemStack(barkItems[i]));
-            	log.info(oreDictBarkNames[i] + " registered with OreDictionary");
+            	log.fine(oreDictBarkNames[i] + " registered with OreDictionary");
             }
         	SpiceTab.init(barkItems[3]);
             
