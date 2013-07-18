@@ -94,9 +94,14 @@ public class ItemSpud extends ItemTool {
 		
 		dropItem = Spices.barkItems[metadata];
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-
-        int count = Block.blocksList[id].quantityDropped(metadata, fortune, world.rand)
-        		+ hl + 2;
+		int count;
+		
+		if (fortune > 0) {
+			count = hl + 3 + world.rand.nextInt(fortune+2) - 1;
+		}
+		else {
+			count = hl + 3;
+		}
         for(int i = 0; i < count; i++)
         {
         	ret.add(new ItemStack(dropItem, 1, metadata));
@@ -105,31 +110,6 @@ public class ItemSpud extends ItemTool {
 	} // end getBarkPeeled()
 	
 	
-//	/* (non-Javadoc)
-//	 * @see net.minecraft.item.ItemTool#onBlockDestroyed(net.minecraft.item.ItemStack, net.minecraft.world.World, int, int, int, int, net.minecraft.entity.EntityLivingBase)
-//	 */
-//	@Override
-//	public boolean onBlockDestroyed(ItemStack par1ItemStack, World world,
-//			int id, int x, int y, int z,
-//			EntityLivingBase player) 
-//	{
-//	      int metadata = player.worldObj.getBlockMetadata(x, y, z);
-//	      super.onBlockDestroyed(par1ItemStack, world, id, x, y, z, player);
-//
-//	      return false;
-//	}
-
-
-	/* (non-Javadoc)
-	 * @see net.minecraft.item.Item#canHarvestBlock(net.minecraft.block.Block)
-	 */
-	@Override
-	public boolean canHarvestBlock(Block par1Block) {
-		return false;
-	}
-
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister) {
