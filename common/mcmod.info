@@ -1,13 +1,11 @@
+[
 {
-  "modinfoversion": 2,
-  "modlist":
-  [{
-      "modid": "sinhikaspice",
+      "modid": "sinhikaspices",
       "name": "Sinhika's Spices",
       "description": "Adding harvestable spices, tools, and recipes that use them.",
       "version": "0.0.1",
       "credits": "Created by Sinhika, inspired by BeckyH",
-      "logoFile": "assets/sinhikaspices/cinnamon_sticks.png",
+      "logoFile": "/sinhikaspices/cinnamon_sticks.png",
       "mcversion": "1.6.2",
       "url": "https://github.com/Sinhika/SinhikaSpices",
       "updateUrl": "",
@@ -17,6 +15,6 @@
       "requiredMods" : ["Forge"],
       "dependencies": ["Forge"],
       "dependants": [],
-      "useDependencyInformation" : true
-    }]
+      "useDependencyInformation" : "true"
 }
+]
