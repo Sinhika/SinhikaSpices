@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<entry key="config.logLevel.comment">Logging level ('ALL', 'OFF', 'FINEST' to 'SEVERE'; per Java Logger API)</entry>
+	<entry key="config.logLevel.bad">Bad logLevel in config file; changed to 'ALL'</entry>
+	<entry key="config.logLevel.set">Logging level set to %s.</entry>
+	<entry key="config.logLevel.read">Config file %s read.</entry>
+	<entry key="config.barkBlockId.comment">Block ID for bark</entry>
+</properties>

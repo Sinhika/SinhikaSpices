@@ -1,4 +1,4 @@
-package sinhika.spices;
+package sinhika.spices.handlers;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -47,37 +47,36 @@ public class CraftingHandler implements ICraftingHandler
                     if (j.getItem() != null
                             && j.getItemName().endsWith("_spud"))
                     {
-                        Spices.log.info("Item is " + j.getItemName() + "(#"
+                        LogHelper.finest("Item is " + j.getItemName() + "(#"
                                 + j.itemID + ")");
                         // if its a spud, create 2: one to get eaten by crafting
-// table, the
+                        // table, the
                         // other to be returned to player.
                         ItemStack k = new ItemStack(j.getItem(), 2,
                                 j.getItemDamage());
 
                         // is spud enchanted? If so, must copy enchantments to
-// new spud(s)
+                        // new spud(s)
                         if (j.isItemEnchanted())
                         {
                             NBTTagCompound nbtcompound = j.getTagCompound();
                             k.setTagCompound(nbtcompound);
                         }
 
-                        Spices.log.info("created 2 of item");
+                        LogHelper.finest("created 2 of item");
                         // actually stick the stack of spuds in the crafting
-// table slot.
+                        // table slot.
                         craftMatrix.setInventorySlotContents(i, k);
-                        Spices.log.info("Inserted double stack into slot #"
-                                + i);
+                        LogHelper.finest("Inserted double stack into slot #" + i);
                     } // end-if item is "spud"
                 } // end-if j
             } // end-for
         }
         catch (Exception e)
         {
-            Spices.log
+            LogHelper
                     .warning("CraftingHandler::onCrafting: Something went horribly wrong!");
-            Spices.log.warning(e.toString());
+            LogHelper.warning(e.toString());
             e.printStackTrace(System.err);
         }
     } // end onCrafting()

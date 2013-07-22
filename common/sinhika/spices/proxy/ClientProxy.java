@@ -1,6 +1,4 @@
-package sinhika.spices.client;
-
-import sinhika.spices.CommonProxy;
+package sinhika.spices.proxy;
 
 public class ClientProxy extends CommonProxy
 {

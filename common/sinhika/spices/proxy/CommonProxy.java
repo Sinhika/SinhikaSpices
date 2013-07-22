@@ -1,4 +1,4 @@
-package sinhika.spices;
+package sinhika.spices.proxy;
 
 public class CommonProxy
 {

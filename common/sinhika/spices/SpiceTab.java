@@ -2,6 +2,7 @@ package sinhika.spices;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import sinhika.spices.lib.ModInfo;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class SpiceTab extends CreativeTabs

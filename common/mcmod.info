@@ -3,9 +3,10 @@
       "modid": "sinhikaspices",
       "name": "Sinhika's Spices",
       "description": "Adding harvestable spices, tools, and recipes that use them.",
-      "version": "0.0.1",
-      "credits": "Created by Sinhika, inspired by BeckyH",
-      "logoFile": "/sinhikaspices/cinnamon_sticks.png",
+      "version": "0.0.2",
+      "credits": 
+"Created by Sinhika, inspired by BeckyH, some convenience code borrowed from Pahimar's tutorials and EE3 mod",
+      "logoFile": "/assets/sinhikaspices/textures/cinnamon_sticks.png",
       "mcversion": "1.6.2",
       "url": "https://github.com/Sinhika/SinhikaSpices",
       "updateUrl": "",

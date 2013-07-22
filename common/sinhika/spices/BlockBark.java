@@ -9,14 +9,13 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import sinhika.spices.lib.BarkHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockBark extends Block
 {
     /** The type of tree this block came from. */
-    private static final String[] iconString = new String[] { "log_oak",
-            "log_spruce", "log_birch", ModInfo.ID + ":log_cinnamon" };
     private static int ANDLIMIT = 3; // change if number of Spices.barkTypes
 // changes.
 
@@ -67,9 +66,10 @@ public class BlockBark extends Block
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs,
             @SuppressWarnings("rawtypes") List subItems)
     {
-        for (int i = 0; i < Spices.barkTypes.length; i++)
+        for (int i = 0; i < BarkHelper.size(); i++)
         {
-            subItems.add(new ItemStack(par1, 1, i));
+            int meta = BarkHelper.getMetadata(i);
+            subItems.add(new ItemStack(par1, 1, meta));
         }
     } // end getSubBlocks()
 
@@ -82,7 +82,8 @@ public class BlockBark extends Block
     @Override
     public int getDamageValue(World par1World, int par2, int par3, int par4)
     {
-        return limitToValidMetadata(par1World.getBlockMetadata(par2, par3, par4));
+        return limitToValidMetadata(par1World
+                .getBlockMetadata(par2, par3, par4));
     }
 
     /**
@@ -97,10 +98,11 @@ public class BlockBark extends Block
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        iconArray = new Icon[Spices.barkTypes.length];
+        iconArray = new Icon[BarkHelper.size()];
         for (int i = 0; i < iconArray.length; ++i)
         {
-            iconArray[i] = iconRegister.registerIcon(iconString[i]);
+            iconArray[i] = 
+                iconRegister.registerIcon(BarkHelper.getBlockTexture(i));
         }
     } // end registerIcons()
 

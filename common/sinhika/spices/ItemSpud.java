@@ -64,11 +64,9 @@ public class ItemSpud extends ItemTool
                 double d = rand.nextFloat() * f + (1.0F - f) * 0.5D;
                 double d1 = rand.nextFloat() * f + (1.0F - f) * 0.5D;
                 double d2 = rand.nextFloat() * f + (1.0F - f) * 0.5D;
-                Spices.log.info("bark drop ID=" + stack.itemID);
                 EntityItem entityitem = new EntityItem(player.worldObj, x + d,
                         y + d1, z + d2, stack);
                 entityitem.delayBeforeCanPickup = 10;
-                Spices.log.info("entity dropped ID=" + entityitem.getEntityItem().itemID);
                 player.worldObj.spawnEntityInWorld(entityitem);
             }
 
@@ -111,7 +109,7 @@ public class ItemSpud extends ItemTool
         }
         for (int i = 0; i < count; i++)
         {
-            ret.add(new ItemStack(dropItem, 1, metadata));
+            ret.add(new ItemStack(dropItem));
         }
         return ret;
     } // end getBarkPeeled()

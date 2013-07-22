@@ -3,6 +3,7 @@ package sinhika.spices;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+import sinhika.spices.lib.BarkHelper;
 
 public class BarkItemBlock extends ItemBlockWithMetadata
 {
@@ -22,7 +23,7 @@ public class BarkItemBlock extends ItemBlockWithMetadata
     public String getUnlocalizedName(ItemStack par1ItemStack)
     {
         // remove 'tile:' prefix, prefix the barktype, replace "tile:"...
-        return "tile:" + Spices.barkTypes[par1ItemStack.getItemDamage()] + "_"
-                + super.getUnlocalizedName(par1ItemStack).substring(5);
+        return "tile:" + BarkHelper.getTypeName(par1ItemStack.getItemDamage())
+                + "_" + super.getUnlocalizedName(par1ItemStack).substring(5);
     }
 }
