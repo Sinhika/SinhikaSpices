@@ -17,7 +17,7 @@ import net.minecraft.item.Item;
 public class ToolType extends ThingType
 {
     public EnumToolMaterial toolMaterial;
-    public String toolTexture;  // basename of texture file for tool.
+ 
     /**
      * @param typeName lowercase material name, e.g. 'wood', 'stone', etc.
      * @param toolMaterial tool material from EnumToolMaterial
@@ -30,10 +30,10 @@ public class ToolType extends ThingType
         this.name = this.typeName + "_spud";
         this.tagLocalized = name + ".name";        
         if (toolTexture.isPresent()) {
-            this.toolTexture = toolTexture.get();
+            this.texture = toolTexture.get();
         }
         else {
-            this.toolTexture =  ModInfo.ID + ":" + typeName + "_spud";
+            this.texture =  ModInfo.ID + ":" + typeName + "_spud";
         }
     } // end ToolType ctor
 

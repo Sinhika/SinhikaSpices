@@ -31,12 +31,11 @@ public class BarkHelper implements IThingHelper
     public void init()
     {
         Optional<String> no_string = Optional.absent();
-        barkTypes.add(new BarkType("oak", no_string, no_string, Block.wood.blockID, 0));
-        barkTypes.add(new BarkType("spruce", no_string, no_string, Block.wood.blockID, 1));
-        barkTypes.add(new BarkType("birch", no_string, no_string, Block.wood.blockID, 2));
+        barkTypes.add(new BarkType("oak", no_string, Block.wood.blockID, 0));
+        barkTypes.add(new BarkType("spruce", no_string, Block.wood.blockID, 1));
+        barkTypes.add(new BarkType("birch", no_string, Block.wood.blockID, 2));
         barkTypes.add(new BarkType("cinnamon", Optional.of(ModInfo.ID + ":cinnamon_sticks"), 
-                    Optional.of(ModInfo.ID + ":log_cinnamon"), Block.wood.blockID, 3));
-        
+                      Block.wood.blockID, 3));        
     } // end init
     
     public void add(BarkType b) {
@@ -51,14 +50,11 @@ public class BarkHelper implements IThingHelper
         return barkTypes.get(index).name;
     }
     
-    public String getOreDictBarkName(int index) {
+    public String getOreDictName(int index) {
         return barkTypes.get(index).oreDictBarkName;
     }
     
-    public String getOreDictBarkBlockName(int index) {
-        return barkTypes.get(index).oreDictBarkBlockName;
-    }
-    
+     
     /* (non-Javadoc)
      * @see sinhika.spices.handlers.IThingHelper#getCapName(int)
      */
@@ -75,12 +71,9 @@ public class BarkHelper implements IThingHelper
         return barkTypes.get(index).typeName;
     }
     
-    public String getBlockTexture(int index) {
-        return barkTypes.get(index).blockTexture;
-    }
-    
-    public String getBarkTexture(int index) {
-        return barkTypes.get(index).barkTexture;
+    @Override
+    public String getTexture(int index) {
+        return barkTypes.get(index).texture;
     }
     
     public int getMetadata(int index) {
@@ -102,14 +95,6 @@ public class BarkHelper implements IThingHelper
     public void setItemID(int index, int id)
     {
         barkTypes.get(index).setItemID(id);
-    }
-    
-    public int getBlockID(int index) {
-        return barkTypes.get(index).blockID;
-    }
-    
-    public void setBlockID(int index, int id) {
-        barkTypes.get(index).setBlockID(id);
     }
     
     public int getLogID(int index) {

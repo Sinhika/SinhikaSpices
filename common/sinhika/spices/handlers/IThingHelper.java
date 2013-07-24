@@ -18,6 +18,8 @@ public interface IThingHelper
 
     public abstract String getLocalizationTag(int index);
 
+    public abstract String getTexture(int index);
+    
     public abstract int size();
 
 }

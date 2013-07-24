@@ -10,9 +10,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import sinhika.spices.BarkItemBlock;
+import sinhika.spices.BlockBark;
 import sinhika.spices.ItemBark;
 import sinhika.spices.ItemSpud;
 import sinhika.spices.lib.Configurables;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
@@ -29,6 +32,9 @@ public class ItemHelper
             DEFAULT_BARK_SIZE);
     public static ArrayList<Item> toolItems = new ArrayList<Item>(
             ToolHelper.INSTANCE.size());
+    
+    // only 1 block ID used until we start adding non-vanilla woods.
+    public static ArrayList<Block> barkBlocks = new ArrayList<Block>(1); 
 
     /**
      * initialize items.
@@ -37,10 +43,47 @@ public class ItemHelper
     {
         // init bark items
         initBarkItems();
+        // init blocks
+        initBlocks();
         // init tool items
         initToolItems();
+  
     }
 
+    
+    private static void initBlocks()
+    {
+        // there is only one blockID until we add non-vanilla blocks.
+        Block barkBlock = new BlockBark(Configurables.barkBlockID);
+        GameRegistry.registerBlock(barkBlock, BarkItemBlock.class, "barkBlock");
+        MinecraftForge.setBlockHarvestLevel(barkBlock, "axe", 0);
+       
+        for (int i = 0; i < BlockHelper.INSTANCE.size(); i++)
+        {
+            // save the configuration id to BlockHelper, even if there is
+            // only one. It may change in the future.
+            BlockHelper.INSTANCE.setItemID(i, Configurables.barkBlockID);
+
+            int meta = BlockHelper.INSTANCE.getMetadata(i);
+            ItemStack barkBlockStack = new ItemStack(barkBlock, 1, meta);
+            
+            // set display name -- should already be set by localization file
+            // but set up a makeshift in case it is not.
+            String tagLocale = "tile." + BlockHelper.INSTANCE.getLocalizationTag(i);
+            if (LocalizationHelper.getLocalizedString(tagLocale).isEmpty())
+            {
+                LanguageRegistry.addName(barkBlockStack, 
+                        "Bundle of " + BlockHelper.INSTANCE.getCapName(i) + " Bark");
+            }
+
+            OreDictionary.registerOre(BlockHelper.INSTANCE.getOreDictName(i),
+                    barkBlockStack);
+            LogHelper.info(BlockHelper.INSTANCE.getOreDictName(i)
+                    + " registered with OreDictionary");
+        }
+        barkBlocks.add(barkBlock);
+    } // end initBlocks()
+    
     /**
      * initialize peeled bark items.
      */
@@ -57,7 +100,7 @@ public class ItemHelper
             // set unlocalized name tag
             barkItem.setUnlocalizedName(BarkHelper.INSTANCE.getName(i));
             // set icon string
-            barkItem.func_111206_d(BarkHelper.INSTANCE.getBarkTexture(i));
+            barkItem.func_111206_d(BarkHelper.INSTANCE.getTexture(i));
 
             // set display name -- should already be set by localization file
             // but set up a makeshift in case it is not.
@@ -68,9 +111,9 @@ public class ItemHelper
             }
 
             // add to ore dictionary
-            OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictBarkName(i),
+            OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictName(i),
                     new ItemStack(barkItem));
-            LogHelper.info(BarkHelper.INSTANCE.getOreDictBarkName(i)
+            LogHelper.info(BarkHelper.INSTANCE.getOreDictName(i)
                     + " registered with OreDictionary");
             // add to list
             barkItems.add(barkItem);
@@ -89,11 +132,12 @@ public class ItemHelper
 
             // create & register the new item
             Item toolItem = new ItemSpud(ToolHelper.INSTANCE.getItemID(i),
-                    ToolHelper.INSTANCE.getToolMaterial(i));
+                                        ToolHelper.INSTANCE.getToolMaterial(i));
+            
             // set unlocalized name tag
             toolItem.setUnlocalizedName(ToolHelper.INSTANCE.getName(i));
             // set icon string
-            toolItem.func_111206_d(ToolHelper.INSTANCE.getToolTexture(i));
+            toolItem.func_111206_d(ToolHelper.INSTANCE.getTexture(i));
 
             // set display name -- should already be set by localization file
             // but set up a makeshift in case it is not.
@@ -125,4 +169,13 @@ public class ItemHelper
         return toolItems.get(index);
     }
 
+    /**
+     * gets Block from barkBlocks list.
+     * @param index index of block in barkBlocks list.
+     * @return Block at index.
+     */
+    public static Block getBarkBlock(int index)
+    {
+        return barkBlocks.get(index);
+    }
 } // end class ItemHelper

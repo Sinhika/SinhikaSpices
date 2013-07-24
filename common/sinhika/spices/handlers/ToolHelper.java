@@ -67,8 +67,9 @@ public  String getTypeName(int index) {
     return toolTypes.get(index).typeName;
 }
 
-public  String getToolTexture(int index) {
-    return toolTypes.get(index).toolTexture;
+@Override
+public  String getTexture(int index) {
+    return toolTypes.get(index).texture;
 }
 
 @Override

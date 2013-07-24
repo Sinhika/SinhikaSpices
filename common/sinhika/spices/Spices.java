@@ -1,20 +1,18 @@
 package sinhika.spices;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import sinhika.spices.handlers.BarkHelper;
+import sinhika.spices.handlers.BlockHelper;
 import sinhika.spices.handlers.ConfigHelper;
 import sinhika.spices.handlers.CraftingHandler;
 import sinhika.spices.handlers.ItemHelper;
 import sinhika.spices.handlers.LocalizationHelper;
 import sinhika.spices.handlers.LogHelper;
 import sinhika.spices.handlers.ToolHelper;
-import sinhika.spices.lib.Configurables;
 import sinhika.spices.lib.ModInfo;
 import sinhika.spices.network.PacketHandler;
 import sinhika.spices.proxy.CommonProxy;
@@ -27,7 +25,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
 
 /**
  * Module Sinhika's Spices main class.
@@ -45,13 +42,6 @@ public class Spices
 
     /** custom creative-mode tab object */
     public static CreativeTabs customTabSpices;
-
-    // TODO clean up all this crap
-    /** bark blocks */
-    public static Block barkBlock;
-    private static final String[] barkBlockNames = { "Bundle of Oak Bark",
-            "Bundle of Spruce Bark", "Bundle of Birch Bark",
-            "Bundle of Cinnamon" };
   
     /** tools */
     private static CraftingHandler spiceCraftingHandler;
@@ -76,6 +66,7 @@ public class Spices
         // load basic item info
         BarkHelper.INSTANCE.init();
         ToolHelper.INSTANCE.init();
+        BlockHelper.INSTANCE.init();
         
         // initialize configurables
         ConfigHelper.init(event);
@@ -93,22 +84,6 @@ public class Spices
     public void load(FMLInitializationEvent event)
     {
         proxy.registerRenderers();
-
-        // spice blocks
-        barkBlock = new BlockBark(Configurables.barkBlockID);
-        GameRegistry.registerBlock(barkBlock, BarkItemBlock.class, "barkBlock");
-        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
-        {
-            int meta = BarkHelper.INSTANCE.getMetadata(i);
-            ItemStack barkBlockStack = new ItemStack(barkBlock, 1, meta);
-            LanguageRegistry.addName(barkBlockStack, barkBlockNames[i]);
-
-            OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictBarkBlockName(i),
-                    barkBlockStack);
-            LogHelper.info(BarkHelper.INSTANCE.getOreDictBarkBlockName(i)
-                    + " registered with OreDictionary");
-        }
-        MinecraftForge.setBlockHarvestLevel(barkBlock, "axe", 0);
 
         // spice items
         ItemHelper.init();
@@ -170,19 +145,19 @@ public class Spices
         } // end-for i
 
         // making & unmaking bark bundles
-        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
+        for (int i = 0; i < BlockHelper.INSTANCE.size(); i++)
         {
-            int meta = BarkHelper.INSTANCE.getMetadata(i);
-            ItemStack barkBlockStack = new ItemStack(barkBlock, 1, meta);
+            int meta = BlockHelper.INSTANCE.getMetadata(i);
+            ItemStack barkBlockStack = new ItemStack(ItemHelper.getBarkBlock(0), 1, meta);
             // OreDict versions
             GameRegistry.addRecipe(
                     new ShapedOreRecipe(barkBlockStack,
                                         new Object[] { blockPattern, 'X',
-                                                BarkHelper.INSTANCE.getOreDictBarkName(i) }));
+                                                BarkHelper.INSTANCE.getOreDictName(i) }));
             GameRegistry.addRecipe(
                     new ShapelessOreRecipe(
                             new ItemStack(ItemHelper.getBarkItem(i), 9), 
-                            BarkHelper.INSTANCE.getOreDictBarkBlockName(i)));
+                            BlockHelper.INSTANCE.getOreDictName(i)));
         } // end-for
     } // end addRecipes()
 } // end class

@@ -24,7 +24,7 @@ public class ItemSpud extends ItemTool
 
     /** an array of the blocks this bark spud is effective against */
     public static final Block[] blocksEffectiveAgainst = { Block.wood,
-            Spices.barkBlock };
+            ItemHelper.getBarkBlock(0) };
 
     /**
      * constructor for ItemSpud
@@ -49,7 +49,7 @@ public class ItemSpud extends ItemTool
         if (player.worldObj.isRemote) return false;
         int id = player.worldObj.getBlockId(x, y, z);
 
-        if (id == Block.wood.blockID || id == Spices.barkBlock.blockID)
+        if (id == Block.wood.blockID || id == ItemHelper.getBarkBlock(0).blockID)
         {
             int metadata = Block.blocksList[id].getDamageValue(player.worldObj,
                     x, y, z);

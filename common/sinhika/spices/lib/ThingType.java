@@ -8,6 +8,7 @@ public class ThingType
     public String name;
     public String tagLocalized;
     public int itemID;
+    public String texture;
 
     public ThingType(String typeName)
     {

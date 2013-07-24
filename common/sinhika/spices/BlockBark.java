@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import sinhika.spices.handlers.BarkHelper;
+import sinhika.spices.handlers.BlockHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -66,9 +67,9 @@ public class BlockBark extends Block
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs,
             @SuppressWarnings("rawtypes") List subItems)
     {
-        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
+        for (int i = 0; i < BlockHelper.INSTANCE.size(); i++)
         {
-            int meta = BarkHelper.INSTANCE.getMetadata(i);
+            int meta = BlockHelper.INSTANCE.getMetadata(i);
             subItems.add(new ItemStack(par1, 1, meta));
         }
     } // end getSubBlocks()
@@ -102,7 +103,7 @@ public class BlockBark extends Block
         for (int i = 0; i < iconArray.length; ++i)
         {
             iconArray[i] = 
-                iconRegister.registerIcon(BarkHelper.INSTANCE.getBlockTexture(i));
+                iconRegister.registerIcon(BlockHelper.INSTANCE.getTexture(i));
         }
     } // end registerIcons()
 
