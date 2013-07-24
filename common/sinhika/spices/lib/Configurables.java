@@ -5,7 +5,8 @@ package sinhika.spices.lib;
 
 import java.util.logging.Level;
 
-import sinhika.spices.Spices;
+import sinhika.spices.handlers.BarkHelper;
+import sinhika.spices.handlers.ToolHelper;
 
 /**
  * Holds values loaded from configuration file.
@@ -25,8 +26,8 @@ public class Configurables
     public static final String KEY_BI_ID_STEM = "BarkItemID";
     public static final String KEY_TOOL_ID_STEM = "SpudItemID";
     
-    public static String keyBarkItemID [] = new String[BarkHelper.size()];
-    public static String keyToolItemID [] = new String[Spices.toolTypes.length];
+    public static String keyBarkItemID [] = new String[BarkHelper.INSTANCE.size()];
+    public static String keyToolItemID [] = new String[ToolHelper.INSTANCE.size()];
     
     public static Level loggingLevel;
     public static int barkBlockID;    // multi-block bark blockID

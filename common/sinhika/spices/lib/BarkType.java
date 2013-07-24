@@ -8,18 +8,13 @@ import com.google.common.base.Optional;
  * @author Sinhika
  *
  */
-public class BarkType
+public class BarkType extends ThingType
 {
-    public String typeName;     // lowercase type name, e.g. 'oak', 'birch', etc.
-    public String capTypeName;  // capitalized type name
     public String oreDictBarkName;  // oreDictionary name of bark ITEM.
     public String oreDictBarkBlockName; // oreDictionary name of bark BLOCK. 
-    public String name;         // unlocalized name stem
-    public String tagLocalized;    // tag for looking up localization
     public String barkTexture;  // basename of texture file for bark ITEM.
     public String blockTexture; // basename of texture file for bark BLOCK.
     
-    public int itemID;          // the itemID value for the bark ITEM.
     public int blockID;         // the blockID value for the bark BLOCK.
     public int logID;           // the blockID value for the matching log this bark came from.
 
@@ -36,13 +31,12 @@ public class BarkType
      */
     public BarkType(String typeName, Optional<String> barkTexture, Optional<String> blockTexture, int log_id, int metadata)
     {
-        super();
-        this.typeName = typeName;
-        this.capTypeName = typeName.substring(0,1).toUpperCase() + typeName.substring(1);
+        super(typeName);
         this.oreDictBarkName = "wood" + capTypeName + "Bark";
         this.oreDictBarkBlockName = "wood" + capTypeName + "BarkBlock";
         this.name = this.typeName + "Bark";
-        this.tagLocalized = name;
+        this.tagLocalized = name + ".name";
+        
         if (barkTexture.isPresent())
         {
             this.barkTexture = barkTexture.get();
@@ -59,11 +53,6 @@ public class BarkType
         this.logID = log_id;
         this.metadata = metadata;
     } // end ctor
-
-    public void setItemID(int itemID)
-    {
-        this.itemID = itemID;
-    }
 
     public void setBlockID(int blockID)
     {

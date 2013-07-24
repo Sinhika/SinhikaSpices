@@ -2,18 +2,18 @@ package sinhika.spices;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.EnumToolMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import sinhika.spices.handlers.BarkHelper;
 import sinhika.spices.handlers.ConfigHelper;
 import sinhika.spices.handlers.CraftingHandler;
+import sinhika.spices.handlers.ItemHelper;
 import sinhika.spices.handlers.LocalizationHelper;
 import sinhika.spices.handlers.LogHelper;
-import sinhika.spices.lib.BarkHelper;
+import sinhika.spices.handlers.ToolHelper;
 import sinhika.spices.lib.Configurables;
 import sinhika.spices.lib.ModInfo;
 import sinhika.spices.network.PacketHandler;
@@ -43,31 +43,17 @@ public class Spices
     @Instance(ModInfo.ID)
     public static Spices instance;
 
-    // TODO clean up all this crap
-
     /** custom creative-mode tab object */
     public static CreativeTabs customTabSpices;
 
+    // TODO clean up all this crap
     /** bark blocks */
     public static Block barkBlock;
     private static final String[] barkBlockNames = { "Bundle of Oak Bark",
             "Bundle of Spruce Bark", "Bundle of Birch Bark",
             "Bundle of Cinnamon" };
-
-    /** bark items */
-    public static Item[] barkItems;
-    private static final String[] barkNames = { "Oak Bark", "Spruce Bark",
-            "Birch Bark", "Cinnamon Sticks" };
-
+  
     /** tools */
-    public static Item[] toolItems;
-    public static final String[] toolTypes = { "wood", "stone", "iron", "gold",
-            "diamond" };
-    private static final EnumToolMaterial[] toolMaterials = {
-            EnumToolMaterial.WOOD, EnumToolMaterial.STONE,
-            EnumToolMaterial.IRON, EnumToolMaterial.GOLD,
-            EnumToolMaterial.EMERALD };
-    public static int[] harvestLevels = { 0, 1, 2, 0, 3 };
     private static CraftingHandler spiceCraftingHandler;
 
     /** Says where the client and server 'proxy' code is loaded. */
@@ -86,8 +72,11 @@ public class Spices
 
         // get language localizations
         LocalizationHelper.loadLanguages();
-        BarkHelper.init();
-
+        
+        // load basic item info
+        BarkHelper.INSTANCE.init();
+        ToolHelper.INSTANCE.init();
+        
         // initialize configurables
         ConfigHelper.init(event);
 
@@ -108,54 +97,23 @@ public class Spices
         // spice blocks
         barkBlock = new BlockBark(Configurables.barkBlockID);
         GameRegistry.registerBlock(barkBlock, BarkItemBlock.class, "barkBlock");
-        for (int i = 0; i < BarkHelper.size(); i++)
+        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {
-            int meta = BarkHelper.getMetadata(i);
+            int meta = BarkHelper.INSTANCE.getMetadata(i);
             ItemStack barkBlockStack = new ItemStack(barkBlock, 1, meta);
             LanguageRegistry.addName(barkBlockStack, barkBlockNames[i]);
 
-            OreDictionary.registerOre(BarkHelper.getOreDictBarkBlockName(i),
+            OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictBarkBlockName(i),
                     barkBlockStack);
-            LogHelper.info(BarkHelper.getOreDictBarkBlockName(i)
+            LogHelper.info(BarkHelper.INSTANCE.getOreDictBarkBlockName(i)
                     + " registered with OreDictionary");
         }
         MinecraftForge.setBlockHarvestLevel(barkBlock, "axe", 0);
 
         // spice items
-        barkItems = new Item[BarkHelper.size()];
-        for (int i = 0; i < BarkHelper.size(); i++)
-        {
-            barkItems[i] = new ItemBark(Configurables.barkItemID[i]);
-            barkItems[i].setUnlocalizedName(BarkHelper.getName(i));
-            barkItems[i].func_111206_d(BarkHelper.getBarkTexture(i));
-            LanguageRegistry.addName(barkItems[i], barkNames[i]);
-
-            OreDictionary.registerOre(BarkHelper.getOreDictBarkName(i),
-                    new ItemStack(barkItems[i]));
-            LogHelper.info(BarkHelper.getOreDictBarkName(i)
-                    + " registered with OreDictionary");
-        }
-        SpiceTab.init(barkItems[3]);
-
-        // tool items
-        toolItems = new Item[toolTypes.length];
-
-        for (int i = 0; i < toolTypes.length; i++)
-        {
-            toolItems[i] = new ItemSpud(Configurables.toolItemID[i],
-                    toolMaterials[i]);
-            toolItems[i].setUnlocalizedName(toolTypes[i] + "_spud");
-            toolItems[i].func_111206_d(ModInfo.ID + ":" + toolTypes[i]
-                    + "_spud");
-            LanguageRegistry.addName(toolItems[i], toolTypes[i].substring(0, 1)
-                    .toUpperCase() + toolTypes[i].substring(1) + " Bark Spud");
-            MinecraftForge.setToolClass(toolItems[i], "spud", harvestLevels[i]);
-        } // end for
-
-        for (Block block : ItemSpud.blocksEffectiveAgainst)
-        {
-            MinecraftForge.setBlockHarvestLevel(block, "spud", 0);
-        }
+        ItemHelper.init();
+        SpiceTab.init(ItemHelper.getBarkItem(3));
+     
         GameRegistry.registerCraftingHandler(spiceCraftingHandler);
         addRecipes();
     } // end load()
@@ -173,46 +131,58 @@ public class Spices
     protected void addRecipes()
     {
         String[] spudPattern = new String[] { " #X", " # ", " # " };
-        Object[] recipeItems = new Object[] { Block.planks, Block.cobblestone,
-                Item.ingotIron, Item.ingotGold, Item.diamond };
         String[] blockPattern = new String[] { "XXX", "XXX", "XXX" };
 
         // spice test recipes
         // create bark spuds
-        for (int i = 0; i < recipeItems.length; ++i)
+        for (int i = 0; i < ToolHelper.INSTANCE.size(); ++i)
         {
-            GameRegistry.addRecipe(new ItemStack(toolItems[i]), new Object[] {
-                    spudPattern, '#', Item.stick, 'X', recipeItems[i] });
+            Object recipeItem;
+            if (ToolHelper.INSTANCE.getToolItem(i).isPresent())
+            {
+                recipeItem = ToolHelper.INSTANCE.getToolItem(i).get();
+            }
+            else {
+                recipeItem = ToolHelper.INSTANCE.getToolBlock(i).get();
+            }
+            GameRegistry.addRecipe( 
+                    new ShapedOreRecipe( new ItemStack(ItemHelper.getToolItem(i)),
+                                          new Object[] { spudPattern, 
+                                                         '#', "stickWood", 
+                                                         'X', recipeItem }));
         } // end for i
 
         // peeling bark
-        for (int i = 0; i < BarkHelper.size(); i++)
+        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {
-            int meta = BarkHelper.getMetadata(i);
-            for (int j = 0; j < toolItems.length; j++)
+            int meta = BarkHelper.INSTANCE.getMetadata(i);
+            for (int j = 0; j < ToolHelper.INSTANCE.size(); j++)
             {
                 GameRegistry.addRecipe(
                         new ShapelessOreRecipe(
-                                new ItemStack(barkItems[i], harvestLevels[j] + 3), 
-                                new ItemStack(toolItems[j], 1, OreDictionary.WILDCARD_VALUE),
-                                new ItemStack(BarkHelper.getLogID(i), 1, meta)));
+                                new ItemStack(ItemHelper.getBarkItem(i), 
+                                              ToolHelper.INSTANCE.getHarvestLevel(j) + 3), 
+                                new ItemStack(ItemHelper.getToolItem(j), 
+                                               1, 
+                                               OreDictionary.WILDCARD_VALUE),
+                                new ItemStack(BarkHelper.INSTANCE.getLogID(i), 1, meta)));
             } // end-for j
         } // end-for i
 
         // making & unmaking bark bundles
-        for (int i = 0; i < BarkHelper.size(); i++)
+        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {
-            int meta = BarkHelper.getMetadata(i);
+            int meta = BarkHelper.INSTANCE.getMetadata(i);
             ItemStack barkBlockStack = new ItemStack(barkBlock, 1, meta);
             // OreDict versions
             GameRegistry.addRecipe(
                     new ShapedOreRecipe(barkBlockStack,
                                         new Object[] { blockPattern, 'X',
-                                                BarkHelper.getOreDictBarkName(i) }));
+                                                BarkHelper.INSTANCE.getOreDictBarkName(i) }));
             GameRegistry.addRecipe(
                     new ShapelessOreRecipe(
-                            new ItemStack(barkItems[i], 9), 
-                            BarkHelper.getOreDictBarkBlockName(i)));
+                            new ItemStack(ItemHelper.getBarkItem(i), 9), 
+                            BarkHelper.INSTANCE.getOreDictBarkBlockName(i)));
         } // end-for
     } // end addRecipes()
 } // end class

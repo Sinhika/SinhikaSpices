@@ -6,4 +6,13 @@
 	<entry key="config.logLevel.set">Logging level set to %s.</entry>
 	<entry key="config.logLevel.read">Config file %s read.</entry>
 	<entry key="config.barkBlockId.comment">Block ID for bark</entry>
+	<entry key="item.oakBark.name">Oak Bark</entry>
+	<entry key="item.spruceBark.name">Spruce Bark</entry>
+	<entry key="item.birchBark.name">Birch Bark</entry>
+	<entry key="item.cinnamonBark.name">Cinnamon Sticks</entry>
+	<entry key="item.wood_spud.name">Wooden Bark Spud</entry>
+	<entry key="item.stone_spud.name">Stone Bark Spud</entry>
+	<entry key="item.iron_spud.name">Iron Bark Spud</entry>
+	<entry key="item.gold_spud.name">Gold Bark Spud</entry>
+	<entry key="item.diamond_spud.name">Diamond Bark Spud</entry>
 </properties>

@@ -5,8 +5,6 @@ import java.util.logging.Level;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
-import sinhika.spices.Spices;
-import sinhika.spices.lib.BarkHelper;
 import sinhika.spices.lib.Configurables;
 import sinhika.spices.lib.Tags;
 
@@ -58,11 +56,11 @@ public class ConfigHelper
         LogHelper.fine(Configurables.KEY_BBID + "=" + Configurables.barkBlockID);
 
         // get item IDs
-        Configurables.barkItemID = new int[BarkHelper.size()];
-        for (int i = 0; i < BarkHelper.size(); i++)
+        Configurables.barkItemID = new int[BarkHelper.INSTANCE.size()];
+        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {
             Configurables.keyBarkItemID[i] = 
-                    BarkHelper.getTypeName(i) + Configurables.KEY_BI_ID_STEM;
+                    BarkHelper.INSTANCE.getTypeName(i) + Configurables.KEY_BI_ID_STEM;
             
             // TODO add config comments here.
             Configurables.barkItemID[i] = config.getItem( Configurables.keyBarkItemID[i],
@@ -72,15 +70,15 @@ public class ConfigHelper
         }
 
         // get tool item IDs
-        Configurables.toolItemID = new int[Spices.toolTypes.length];
-        for (int i = 0; i < Spices.toolTypes.length; i++)
+        Configurables.toolItemID = new int[ToolHelper.INSTANCE.size()];
+        for (int i = 0; i < ToolHelper.INSTANCE.size(); i++)
         {
             Configurables.keyToolItemID[i] = 
-                    Spices.toolTypes[i] + Configurables.KEY_TOOL_ID_STEM;
+                    ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM;
             // TODO add config comments here.
             Configurables.toolItemID[i] = config.getItem(Configurables.CATEGORY_TOOL, 
                     Configurables.keyToolItemID[i],
-                    Configurables.DEFAULT_BASE_ITEMID + BarkHelper.size() + i)
+                    Configurables.DEFAULT_BASE_ITEMID + BarkHelper.INSTANCE.size() + i)
                     .getInt();
             LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID[i] + "="
                     + Configurables.toolItemID[i]);

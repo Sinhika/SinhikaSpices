@@ -3,6 +3,7 @@ package sinhika.spices;
 import java.util.ArrayList;
 import java.util.Random;
 
+import sinhika.spices.handlers.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.enchantment.Enchantment;
@@ -95,7 +96,7 @@ public class ItemSpud extends ItemTool
         Item dropItem;
         int hl = toolMaterial.getHarvestLevel();
 
-        dropItem = Spices.barkItems[metadata];
+        dropItem = ItemHelper.getBarkItem(metadata);
         ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
         int count;
 
