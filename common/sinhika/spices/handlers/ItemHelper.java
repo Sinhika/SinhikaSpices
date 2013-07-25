@@ -110,6 +110,9 @@ public class ItemHelper
                 LanguageRegistry.addName(barkItem, BarkHelper.INSTANCE.getCapName(i));
             }
 
+            // add fuel handler
+            GameRegistry.registerFuelHandler(new SpiceFuelHandler());
+            
             // add to ore dictionary
             OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictName(i),
                     new ItemStack(barkItem));

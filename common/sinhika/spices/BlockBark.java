@@ -31,7 +31,8 @@ public class BlockBark extends Block
         setHardness(1.5F);
         setUnlocalizedName("barkBlock");
         func_111022_d("log");
-    }
+        BlockBark.setBurnProperties(this.blockID, 5, 5);
+     }
 
     @Override
     @SideOnly(Side.CLIENT)
