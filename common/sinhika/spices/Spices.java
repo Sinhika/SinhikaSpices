@@ -1,17 +1,15 @@
 package sinhika.spices;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import sinhika.spices.handlers.BarkHelper;
 import sinhika.spices.handlers.BlockHelper;
 import sinhika.spices.handlers.ConfigHelper;
 import sinhika.spices.handlers.CraftingHandler;
+import sinhika.spices.handlers.FuelHandler;
 import sinhika.spices.handlers.ItemHelper;
 import sinhika.spices.handlers.LocalizationHelper;
 import sinhika.spices.handlers.LogHelper;
+import sinhika.spices.handlers.RecipeHelper;
 import sinhika.spices.handlers.ToolHelper;
 import sinhika.spices.lib.ModInfo;
 import sinhika.spices.network.PacketHandler;
@@ -43,9 +41,9 @@ public class Spices
     /** custom creative-mode tab object */
     public static CreativeTabs customTabSpices;
   
-    /** tools */
     private static CraftingHandler spiceCraftingHandler;
-
+    private static FuelHandler spiceFuelHandler;
+    
     /** Says where the client and server 'proxy' code is loaded. */
     @SidedProxy(clientSide = "sinhika.spices.proxy.ClientProxy", serverSide = "sinhika.spices.proxy.CommonProxy")
     public static CommonProxy proxy;
@@ -74,6 +72,7 @@ public class Spices
         // create handlers
         customTabSpices = new SpiceTab();
         spiceCraftingHandler = new CraftingHandler();
+        spiceFuelHandler = new FuelHandler();
     } // end preInit()
 
     /**
@@ -89,8 +88,11 @@ public class Spices
         ItemHelper.init();
         SpiceTab.init(ItemHelper.getBarkItem(3));
      
+        // register handlers
         GameRegistry.registerCraftingHandler(spiceCraftingHandler);
-        addRecipes();
+        GameRegistry.registerFuelHandler(spiceFuelHandler);
+        
+        RecipeHelper.addRecipes();
     } // end load()
 
     @EventHandler
@@ -98,66 +100,4 @@ public class Spices
     {
         // Stub Method
     }
-
-    /**
-     * add module recipes; moved to separate method to reduce clutter in load().
-     * 
-     */
-    protected void addRecipes()
-    {
-        String[] spudPattern = new String[] { " #X", " # ", " # " };
-        String[] blockPattern = new String[] { "XXX", "XXX", "XXX" };
-
-        // spice test recipes
-        // create bark spuds
-        for (int i = 0; i < ToolHelper.INSTANCE.size(); ++i)
-        {
-            Object recipeItem;
-            if (ToolHelper.INSTANCE.getToolItem(i).isPresent())
-            {
-                recipeItem = ToolHelper.INSTANCE.getToolItem(i).get();
-            }
-            else {
-                recipeItem = ToolHelper.INSTANCE.getToolBlock(i).get();
-            }
-            GameRegistry.addRecipe( 
-                    new ShapedOreRecipe( new ItemStack(ItemHelper.getToolItem(i)),
-                                          new Object[] { spudPattern, 
-                                                         '#', "stickWood", 
-                                                         'X', recipeItem }));
-        } // end for i
-
-        // peeling bark
-        for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
-        {
-            int meta = BarkHelper.INSTANCE.getMetadata(i);
-            for (int j = 0; j < ToolHelper.INSTANCE.size(); j++)
-            {
-                GameRegistry.addRecipe(
-                        new ShapelessOreRecipe(
-                                new ItemStack(ItemHelper.getBarkItem(i), 
-                                              ToolHelper.INSTANCE.getHarvestLevel(j) + 3), 
-                                new ItemStack(ItemHelper.getToolItem(j), 
-                                               1, 
-                                               OreDictionary.WILDCARD_VALUE),
-                                new ItemStack(BarkHelper.INSTANCE.getLogID(i), 1, meta)));
-            } // end-for j
-        } // end-for i
-
-        // making & unmaking bark bundles
-        for (int i = 0; i < BlockHelper.INSTANCE.size(); i++)
-        {
-            int meta = BlockHelper.INSTANCE.getMetadata(i);
-            ItemStack barkBlockStack = new ItemStack(ItemHelper.getBarkBlock(0), 1, meta);
-            // OreDict versions
-            GameRegistry.addRecipe(
-                    new ShapedOreRecipe(barkBlockStack,
-                                        new Object[] { blockPattern, 'X',
-                                                BarkHelper.INSTANCE.getOreDictName(i) }));
-            GameRegistry.addRecipe(
-                    new ShapelessOreRecipe(
-                            new ItemStack(ItemHelper.getBarkItem(i), 9), 
-                            BlockHelper.INSTANCE.getOreDictName(i)));
-        } // end-for
-    } // end addRecipes()
 } // end class

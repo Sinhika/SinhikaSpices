@@ -10,10 +10,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
-import sinhika.spices.BarkItemBlock;
-import sinhika.spices.BlockBark;
-import sinhika.spices.ItemBark;
-import sinhika.spices.ItemSpud;
+import sinhika.spices.block.BarkItemBlock;
+import sinhika.spices.block.BlockBark;
+import sinhika.spices.item.ItemBark;
+import sinhika.spices.item.ItemSpud;
 import sinhika.spices.lib.Configurables;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -26,10 +26,8 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
  */
 public class ItemHelper
 {
-    private static final int DEFAULT_BARK_SIZE = 4;
-
     public static ArrayList<Item> barkItems = new ArrayList<Item>(
-            DEFAULT_BARK_SIZE);
+            BarkHelper.INSTANCE.size());
     public static ArrayList<Item> toolItems = new ArrayList<Item>(
             ToolHelper.INSTANCE.size());
     
@@ -110,9 +108,6 @@ public class ItemHelper
                 LanguageRegistry.addName(barkItem, BarkHelper.INSTANCE.getCapName(i));
             }
 
-            // add fuel handler
-            GameRegistry.registerFuelHandler(new SpiceFuelHandler());
-            
             // add to ore dictionary
             OreDictionary.registerOre(BarkHelper.INSTANCE.getOreDictName(i),
                     new ItemStack(barkItem));

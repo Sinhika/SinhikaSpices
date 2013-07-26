@@ -39,28 +39,12 @@ public class ToolType extends ThingType
 
     public Optional<Item> getToolItem()
     {
-        Optional<Item> no_item = Optional.absent();
-        int id = toolMaterial.getToolCraftingMaterial();
-        if (Util.isVanillaBlockID(id))
-        {
-            return no_item;
-        }
-        else {
-            return Optional.of(Item.itemsList[id]);
-        }
+        return Util.getToolItem(toolMaterial);
     } // end getToolItem
     
     public Optional<Block> getToolBlock()
     {
-        Optional<Block> no_block = Optional.absent();
-        int id = toolMaterial.getToolCraftingMaterial();
-        if (Util.isVanillaBlockID(id))
-        {
-            return Optional.of(Block.blocksList[id]);
-        }
-        else {
-            return no_block;
-        }     
+        return Util.getToolBlock(toolMaterial);
     } // end getToolBlock
     
 } // end class

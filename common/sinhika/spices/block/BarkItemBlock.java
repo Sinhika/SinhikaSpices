@@ -1,8 +1,9 @@
-package sinhika.spices;
+package sinhika.spices.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlockWithMetadata;
 import net.minecraft.item.ItemStack;
+import sinhika.spices.Spices;
 import sinhika.spices.handlers.BlockHelper;
 
 public class BarkItemBlock extends ItemBlockWithMetadata

@@ -1,5 +1,6 @@
-package sinhika.spices;
+package sinhika.spices.item;
 
+import sinhika.spices.Spices;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import cpw.mods.fml.relauncher.Side;

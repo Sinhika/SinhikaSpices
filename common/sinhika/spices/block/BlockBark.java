@@ -1,4 +1,4 @@
-package sinhika.spices;
+package sinhika.spices.block;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import sinhika.spices.Spices;
 import sinhika.spices.handlers.BarkHelper;
 import sinhika.spices.handlers.BlockHelper;
 import cpw.mods.fml.relauncher.Side;

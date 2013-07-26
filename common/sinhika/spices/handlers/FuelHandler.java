@@ -1,10 +1,10 @@
 package sinhika.spices.handlers;
 
-import sinhika.spices.ItemBark;
+import sinhika.spices.item.ItemBark;
 import net.minecraft.item.ItemStack;
 import cpw.mods.fml.common.IFuelHandler;
 
-public class SpiceFuelHandler implements IFuelHandler
+public class FuelHandler implements IFuelHandler
 {
 
     @Override

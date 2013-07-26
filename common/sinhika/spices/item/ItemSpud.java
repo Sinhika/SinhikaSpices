@@ -1,8 +1,9 @@
-package sinhika.spices;
+package sinhika.spices.item;
 
 import java.util.ArrayList;
 import java.util.Random;
 
+import sinhika.spices.Spices;
 import sinhika.spices.handlers.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
