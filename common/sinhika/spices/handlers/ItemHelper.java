@@ -45,8 +45,7 @@ public class ItemHelper
         initBlocks();
         // init tool items
         initToolItems();
-  
-    }
+    } // end init()
 
     
     private static void initBlocks()
@@ -118,6 +117,7 @@ public class ItemHelper
         } // end for
     } // end initBarkItems()
 
+    
     /**
      * initialize tool items.
      */
@@ -125,38 +125,72 @@ public class ItemHelper
     {
         for (int i = 0; i < ToolHelper.INSTANCE.size(); i++)
         {
-            // save the configuration ID to ToolHelper.
-            ToolHelper.INSTANCE.setItemID(i, Configurables.toolItemID[i]);
-
-            // create & register the new item
-            Item toolItem = new ItemSpud(ToolHelper.INSTANCE.getItemID(i),
-                                        ToolHelper.INSTANCE.getToolMaterial(i));
-            
-            // set unlocalized name tag
-            toolItem.setUnlocalizedName(ToolHelper.INSTANCE.getName(i));
-            // set icon string
-            toolItem.func_111206_d(ToolHelper.INSTANCE.getTexture(i));
-
-            // set display name -- should already be set by localization file
-            // but set up a makeshift in case it is not.
-            String tagLocale = "item." + ToolHelper.INSTANCE.getLocalizationTag(i);
-            if (LocalizationHelper.getLocalizedString(tagLocale).isEmpty())
-            {
-                LanguageRegistry.addName(toolItem, ToolHelper.INSTANCE.getCapName(i)
-                        + "Bark Spud");
-            }
-
-            MinecraftForge.setToolClass(toolItem, "spud",
-                    ToolHelper.INSTANCE.getHarvestLevel(i));
-            toolItems.add(toolItem);
+            initTool(i, Configurables.toolItemID.get(i));
         } // end-for
 
         for (Block block : ItemSpud.blocksEffectiveAgainst)
         {
             MinecraftForge.setBlockHarvestLevel(block, "spud", 0);
         }
-    } // end initToolItems
+    } // end initToolItems()
 
+    
+    public static void addSupplementalToolItems()
+    {
+        int toolId;
+        
+        // do we have extra tool profiles?
+        if (toolItems.size() < ToolHelper.INSTANCE.size()) 
+        {
+            // start at the end of the vanilla list...
+            for (int i = toolItems.size(); i < ToolHelper.INSTANCE.size(); i++)
+            {
+                try {
+                    toolId = Configurables.toolItemID.get(i);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    // configure an new id.
+                    toolId = ConfigHelper.addTool(ToolHelper.INSTANCE.getToolMaterial(i));
+                } // end-catch
+                initTool(i, toolId);
+            } // end-for
+        } // end-if
+    } // end addSupplementalToolItems()
+    
+    /**
+     * initialize a tool item.
+     * @param toolIndex
+     * @param id
+     */
+    public static void initTool(int toolIndex, int id)
+    {
+        // save the configuration ID to ToolHelper.
+        ToolHelper.INSTANCE.setItemID(toolIndex, id);
+
+        // create & register the new item
+        Item toolItem = new ItemSpud(ToolHelper.INSTANCE.getItemID(toolIndex),
+                                    ToolHelper.INSTANCE.getToolMaterial(toolIndex));
+        
+        // set unlocalized name tag
+        toolItem.setUnlocalizedName(ToolHelper.INSTANCE.getName(toolIndex));
+        // set icon string
+        toolItem.func_111206_d(ToolHelper.INSTANCE.getTexture(toolIndex));
+
+        // set display name -- should already be set by localization file
+        // but set up a makeshift in case it is not.
+        String tagLocale = "item." + ToolHelper.INSTANCE.getLocalizationTag(toolIndex);
+        if (LocalizationHelper.getLocalizedString(tagLocale).isEmpty())
+        {
+            LanguageRegistry.addName(toolItem, ToolHelper.INSTANCE.getCapName(toolIndex)
+                    + " Bark Spud");
+        }
+
+        MinecraftForge.setToolClass(toolItem, "spud",
+                ToolHelper.INSTANCE.getHarvestLevel(toolIndex));
+        toolItems.add(toolItem);    
+    } // end initTool()
+    
+    
     public static Item getBarkItem(int index)
     {
         return barkItems.get(index);

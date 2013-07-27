@@ -1,5 +1,7 @@
 package sinhika.spices.lib;
 
+import org.apache.commons.lang3.text.WordUtils;
+
 public class ThingType
 {
 
@@ -14,7 +16,7 @@ public class ThingType
     {
         super();
         this.typeName = typeName;
-        this.capTypeName = typeName.substring(0,1).toUpperCase() + typeName.substring(1);
+        this.capTypeName = WordUtils.capitalizeFully(typeName);
     }
 
     public void setItemID(int itemID)

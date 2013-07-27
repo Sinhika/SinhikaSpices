@@ -4,7 +4,7 @@
 package sinhika.spices.handlers;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
 import com.google.common.base.Optional;
 
 import net.minecraft.block.Block;
@@ -21,31 +21,53 @@ public class ToolHelper implements IThingHelper
 {
     private static final int DEFAULT_TYPE_SIZE = EnumToolMaterial.values().length;
     private ArrayList<ToolType> toolTypes;
-
+    public HashMap<EnumToolMaterial, Integer> materialsInUse;
     public static ToolHelper INSTANCE = new ToolHelper();
 
     public ToolHelper() {
         toolTypes =  new ArrayList<ToolType>(DEFAULT_TYPE_SIZE);
+        materialsInUse = new HashMap<EnumToolMaterial,Integer>();
     }
     
 /**
- * loads up the vanilla bark types plus any from this module.
+ * loads up the vanilla tool materials plus any from this module.
  */
 @Override
 public void init()
 {
     Optional<String> no_string = Optional.absent();
-    toolTypes.add(new ToolType("wood", EnumToolMaterial.WOOD, no_string));
-    toolTypes.add(new ToolType("stone", EnumToolMaterial.STONE, no_string));
-    toolTypes.add(new ToolType("iron", EnumToolMaterial.IRON, no_string));
-    toolTypes.add(new ToolType("gold", EnumToolMaterial.GOLD, no_string));
-    toolTypes.add(new ToolType("diamond", EnumToolMaterial.EMERALD, no_string));
-     
+    add(new ToolType("wood", EnumToolMaterial.WOOD, no_string));
+    add(new ToolType("stone", EnumToolMaterial.STONE, no_string));
+    add(new ToolType("iron", EnumToolMaterial.IRON, no_string));
+    add(new ToolType("gold", EnumToolMaterial.GOLD, no_string));
+    add(new ToolType("diamond", EnumToolMaterial.EMERALD, no_string));
 } // end init
 
-public void add(ToolType b) {
-    toolTypes.add(b);
-}
+
+/**
+ * check for other tool materials added by other modules, and
+     * add tool info for the additional materials. 
+ */
+public void addSupplementalTools()
+{
+    Optional<String> no_string = Optional.absent();
+    for (EnumToolMaterial tm : EnumToolMaterial.values())
+    {
+        if (materialsInUse.containsKey(tm)) continue;
+        add(new ToolType(tm.toString().toLowerCase(), tm,  
+                         no_string));
+    } // end-for
+} // end addSupplementalTools
+
+
+public void add(ToolType b) 
+{
+    if (!materialsInUse.containsKey(b.toolMaterial))
+    {
+        toolTypes.add(b);
+        materialsInUse.put(b.toolMaterial, materialsInUse.size());
+    }
+} // end add()
 
 public  EnumToolMaterial getToolMaterial(int index)
 {

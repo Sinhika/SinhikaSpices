@@ -1,8 +1,12 @@
 package sinhika.spices.handlers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.logging.Level;
 
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraft.item.EnumToolMaterial;
+import net.minecraftforge.common.ConfigCategory;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import sinhika.spices.lib.Configurables;
@@ -15,9 +19,11 @@ import sinhika.spices.lib.Tags;
  */
 public class ConfigHelper
 {
+    private static Configuration config;
+    
     public static void init(FMLPreInitializationEvent event)
     {
-        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+        config = new Configuration(event.getSuggestedConfigurationFile());
         
         // load configuration from file
         config.load();
@@ -69,21 +75,53 @@ public class ConfigHelper
                     + Configurables.barkItemID[i]);
         }
 
-        // get tool item IDs
-        Configurables.toolItemID = new int[ToolHelper.INSTANCE.size()];
+        // TOOLS
+        // we might have surprise new tool types because of other mods,
+        // so check what all is in the tool category.
+        ConfigCategory toolCat = config.getCategory(Configurables.CATEGORY_TOOL);
+        int toolCount = Math.max(toolCat.size(), ToolHelper.INSTANCE.size());
+        
+        Configurables.toolItemID = new ArrayList<Integer>(toolCount);
+        Configurables.keyToolItemID = new ArrayList<String>(toolCount);
+        
+        // first, get the knowns.
+        HashSet<String> keySet = new HashSet<String>(toolCat.keySet());
+                
         for (int i = 0; i < ToolHelper.INSTANCE.size(); i++)
         {
-            Configurables.keyToolItemID[i] = 
-                    ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM;
+            Configurables.keyToolItemID.add( 
+                    ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM);
             // TODO add config comments here.
-            Configurables.toolItemID[i] = config.getItem(Configurables.CATEGORY_TOOL, 
-                    Configurables.keyToolItemID[i],
+            Configurables.toolItemID.add( 
+                    config.getItem(Configurables.CATEGORY_TOOL, 
+                                    Configurables.keyToolItemID.get(i),
                     Configurables.DEFAULT_BASE_ITEMID + BarkHelper.INSTANCE.size() + i)
-                    .getInt();
-            LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID[i] + "="
-                    + Configurables.toolItemID[i]);
+                    .getInt());
+            LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) + "="
+                    + Configurables.toolItemID.get(i));
+            
+            if (keySet.contains(Configurables.keyToolItemID.get(i))) 
+            {
+                keySet.remove(Configurables.keyToolItemID.get(i));
+            }
         }
-
+        // then, check for extras
+        if (!keySet.isEmpty())
+        {
+            int i = ToolHelper.INSTANCE.size();
+            for (String k : keySet)
+            {
+                Configurables.keyToolItemID.add(k);
+                Configurables.toolItemID.add( 
+                    config.getItem(Configurables.CATEGORY_TOOL, k,
+                                   Configurables.DEFAULT_BASE_ITEMID 
+                                    + BarkHelper.INSTANCE.size() + i).getInt());
+                LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) 
+                        + "=" + Configurables.toolItemID.get(i));                
+                i++;
+            }
+        } // end-if keySet not empty
+        
         // save configuration back to file
         if (config.hasChanged())
         {
@@ -91,4 +129,19 @@ public class ConfigHelper
             config.save();
         }
     } // end init()
+    
+    public static int addTool(EnumToolMaterial tm)
+    {
+        int i = ToolHelper.INSTANCE.materialsInUse.get(tm);
+        Configurables.keyToolItemID.add(ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM);
+        Configurables.toolItemID.add( 
+                config.getItem(Configurables.CATEGORY_TOOL, 
+                                Configurables.keyToolItemID.get(i),
+                Configurables.DEFAULT_BASE_ITEMID + BarkHelper.INSTANCE.size() + i).getInt());
+        LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) 
+                + "=" + Configurables.toolItemID.get(i));
+        config.save();
+        return Configurables.toolItemID.get(i);
+    } // end addTool()
+    
 } // end class

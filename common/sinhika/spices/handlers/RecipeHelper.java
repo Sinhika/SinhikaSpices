@@ -1,5 +1,6 @@
 package sinhika.spices.handlers;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -37,13 +38,29 @@ public class RecipeHelper
             } // end-for j
         } // end-for i
 
-        // making & unmaking bark bundles
+        // making & unmaking & smelting bark bundles
         for (int i = 0; i < BlockHelper.INSTANCE.size(); i++)
         {
             GameRegistry.addRecipe(makeNewBarkBlockRecipe(i, 0));
-            GameRegistry.addRecipe(makeNewSplitBarkRecipe(i));                   
+            GameRegistry.addRecipe(makeNewSplitBarkRecipe(i));
+            GameRegistry.addSmelting(ItemHelper.getBarkBlock(0).blockID, 
+                                     new ItemStack(Item.coal, 1, 1), 0.1F);
         } // end-for
+        
+        // special item recipes.
+        
     } // end addRecipes()
+    
+    
+    /**
+     * check for other tool materials added by other modules, and
+     * add bark spud recipes for the additional materials.
+     */
+    public static void AddSupplementalToolRecipes()
+    {
+        
+    } // end AddSupplementalToolRecipes()
+    
     
     /**
      * create recipe for bark split from bundles.

@@ -98,6 +98,8 @@ public class Spices
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
-        // Stub Method
+        // Add extras
+        ToolHelper.INSTANCE.addSupplementalTools();
+        ItemHelper.addSupplementalToolItems();
     }
 } // end class

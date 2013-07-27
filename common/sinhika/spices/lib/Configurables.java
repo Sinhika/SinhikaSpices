@@ -3,10 +3,10 @@
  */
 package sinhika.spices.lib;
 
+import java.util.ArrayList;
 import java.util.logging.Level;
 
 import sinhika.spices.handlers.BarkHelper;
-import sinhika.spices.handlers.ToolHelper;
 
 /**
  * Holds values loaded from configuration file.
@@ -27,10 +27,10 @@ public class Configurables
     public static final String KEY_TOOL_ID_STEM = "SpudItemID";
     
     public static String keyBarkItemID [] = new String[BarkHelper.INSTANCE.size()];
-    public static String keyToolItemID [] = new String[ToolHelper.INSTANCE.size()];
+    public static ArrayList<String> keyToolItemID;
     
     public static Level loggingLevel;
     public static int barkBlockID;    // multi-block bark blockID
     public static int barkItemID[];   // barkItem itemIDs.
-    public static int toolItemID[];   // spud tool itemIDs.
-}
+    public static ArrayList<Integer>toolItemID;   // spud tool itemIDs.
+} // end class
