@@ -4,12 +4,14 @@
 package sinhika.spices.handlers;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import sinhika.spices.Spices;
 import sinhika.spices.block.BarkItemBlock;
 import sinhika.spices.block.BlockBark;
 import sinhika.spices.item.ItemBark;
@@ -30,6 +32,11 @@ public class ItemHelper
             BarkHelper.INSTANCE.size());
     public static ArrayList<Item> toolItems = new ArrayList<Item>(
             ToolHelper.INSTANCE.size());
+    public static ArrayList<Item> spiceItems = 
+            new ArrayList<Item>(SpiceHelper.INSTANCE.size());
+    
+    private static HashMap<String, Integer> spiceLookup =
+            new HashMap<String, Integer>(SpiceHelper.INSTANCE.size());
     
     // only 1 block ID used until we start adding non-vanilla woods.
     public static ArrayList<Block> barkBlocks = new ArrayList<Block>(1); 
@@ -45,6 +52,8 @@ public class ItemHelper
         initBlocks();
         // init tool items
         initToolItems();
+        // init spice items
+        initSpiceItems();
     } // end init()
 
     
@@ -117,6 +126,46 @@ public class ItemHelper
         } // end for
     } // end initBarkItems()
 
+    /**
+     * initialize spice/food items
+     */
+    private static void initSpiceItems()
+    {
+        for (int i=0; i < SpiceHelper.INSTANCE.size(); i++)
+        {
+            // save the configuration id to SpiceHelper
+            SpiceHelper.INSTANCE.setItemID(i, Configurables.spiceItemID[i]);
+
+            // create and register the new item.
+            Item spiceItem = new Item(SpiceHelper.INSTANCE.getItemID(i));
+            // set max stack size
+            spiceItem.setMaxStackSize(64);
+            // set creative tab
+            spiceItem.setCreativeTab(Spices.customTabSpices);
+            
+            // set unlocalized name tag
+            spiceItem.setUnlocalizedName(SpiceHelper.INSTANCE.getName(i));
+            // set icon string
+            spiceItem.func_111206_d(SpiceHelper.INSTANCE.getTexture(i));
+
+            // set display name -- should already be set by localization file
+            // but set up a makeshift in case it is not.
+            String tagLocale = "item." + SpiceHelper.INSTANCE.getLocalizationTag(i);
+            if (LocalizationHelper.getLocalizedString(tagLocale).isEmpty())
+            {
+                LanguageRegistry.addName(spiceItem, SpiceHelper.INSTANCE.getCapName(i));
+            }
+
+            // add to ore dictionary
+            OreDictionary.registerOre(SpiceHelper.INSTANCE.getOreDictName(i),
+                    new ItemStack(spiceItem));
+            LogHelper.info(SpiceHelper.INSTANCE.getOreDictName(i)
+                    + " registered with OreDictionary");
+            // add to list
+            spiceItems.add(spiceItem);
+            spiceLookup.put(SpiceHelper.INSTANCE.getTypeName(i), i);
+        } // end for
+    } // end initSpiceItems()
     
     /**
      * initialize tool items.
@@ -201,6 +250,17 @@ public class ItemHelper
         return toolItems.get(index);
     }
 
+    public static Item getSpiceItem(int index)
+    {
+        return spiceItems.get(index);
+    }
+    
+    public static Item getSpiceItem(String typeName)
+    {
+        int index = spiceLookup.get(typeName);
+        return getSpiceItem(index);
+    }
+    
     /**
      * gets Block from barkBlocks list.
      * @param index index of block in barkBlocks list.

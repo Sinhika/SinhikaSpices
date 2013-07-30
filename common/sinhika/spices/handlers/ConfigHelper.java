@@ -62,6 +62,19 @@ public class ConfigHelper
         LogHelper.fine(Configurables.KEY_BBID + "=" + Configurables.barkBlockID);
 
         // get item IDs
+        Configurables.spiceItemID = new int[SpiceHelper.INSTANCE.size()];
+        for (int i=0; i < SpiceHelper.INSTANCE.size(); i++)
+        {
+            Configurables.keySpiceItemID[i] =
+                    SpiceHelper.INSTANCE.getTypeName(i) + Configurables.KEY_SPICE_ID_STEM;
+            // TODO add config comments here.
+            Configurables.spiceItemID[i] = 
+                    config.getItem(Configurables.keySpiceItemID[i],
+                                   Configurables.DEFAULT_BASE_ITEMID - (i+1)).getInt();
+            LogHelper.fine("spiceItemID[" + i + "]=" +  Configurables.keySpiceItemID[i] + "="
+                    + Configurables.spiceItemID[i]);
+        }
+        
         Configurables.barkItemID = new int[BarkHelper.INSTANCE.size()];
         for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {

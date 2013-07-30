@@ -19,7 +19,7 @@ import sinhika.spices.lib.ToolType;
  */
 public class ToolHelper implements IThingHelper
 {
-    private static final int DEFAULT_TYPE_SIZE = EnumToolMaterial.values().length;
+    public static final int DEFAULT_TYPE_SIZE = 5;
     private ArrayList<ToolType> toolTypes;
     public HashMap<EnumToolMaterial, Integer> materialsInUse;
     public static ToolHelper INSTANCE = new ToolHelper();

@@ -15,8 +15,9 @@
 	<entry key="item.iron_spud.name">Iron Bark Spud</entry>
 	<entry key="item.gold_spud.name">Gold Bark Spud</entry>
 	<entry key="item.diamond_spud.name">Diamond Bark Spud</entry>
+	<entry key="item.spice_cinnamon.name">Ground Cinnamon</entry>
 	<entry key="tile.oakBarkBlock.name">Bundle of Oak Bark</entry>
 	<entry key="tile.spruceBarkBlock.name">Bundle of Spruce Bark</entry>
 	<entry key="tile.birchBarkBlock.name">Bundle of Birch Bark</entry>
-	<entry key="tile.cinnamonBarkBlock.name">Bundle of Cinnamon</entry>
+	<entry key="tile.cinnamonBarkBlock.name">Bundle of Cinnamon</entry>	
 </properties>

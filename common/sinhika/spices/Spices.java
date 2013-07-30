@@ -10,7 +10,9 @@ import sinhika.spices.handlers.ItemHelper;
 import sinhika.spices.handlers.LocalizationHelper;
 import sinhika.spices.handlers.LogHelper;
 import sinhika.spices.handlers.RecipeHelper;
+import sinhika.spices.handlers.SpiceHelper;
 import sinhika.spices.handlers.ToolHelper;
+import sinhika.spices.lib.Configurables;
 import sinhika.spices.lib.ModInfo;
 import sinhika.spices.network.PacketHandler;
 import sinhika.spices.proxy.CommonProxy;
@@ -65,8 +67,9 @@ public class Spices
         BarkHelper.INSTANCE.init();
         ToolHelper.INSTANCE.init();
         BlockHelper.INSTANCE.init();
+        SpiceHelper.INSTANCE.init();
         
-        // initialize configurables
+        // initialize configurables (also inits logLevel)
         ConfigHelper.init(event);
 
         // create handlers
@@ -82,9 +85,11 @@ public class Spices
     @EventHandler
     public void load(FMLInitializationEvent event)
     {
+        // reset logLevel in case Forge changed it.
+        LogHelper.setLevel(Configurables.loggingLevel);
         proxy.registerRenderers();
 
-        // spice items
+        // module items
         ItemHelper.init();
         SpiceTab.init(ItemHelper.getBarkItem(3));
      
@@ -98,8 +103,12 @@ public class Spices
     @EventHandler
     public void postInit(FMLPostInitializationEvent event)
     {
+        // reset logLevel in case Forge changed it.
+        LogHelper.setLevel(Configurables.loggingLevel);
+        
         // Add extras
         ToolHelper.INSTANCE.addSupplementalTools();
         ItemHelper.addSupplementalToolItems();
+        RecipeHelper.AddSupplementalToolRecipes();
     }
 } // end class

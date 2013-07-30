@@ -48,7 +48,11 @@ public class RecipeHelper
         } // end-for
         
         // special item recipes.
-        
+        // ground cinnamon
+        GameRegistry.addRecipe(
+                new ShapelessOreRecipe(
+                        new ItemStack(ItemHelper.getSpiceItem("cinnamon")),
+                        "woodCinnamonBark"));
     } // end addRecipes()
     
     
@@ -58,7 +62,13 @@ public class RecipeHelper
      */
     public static void AddSupplementalToolRecipes()
     {
-        
+        if (ItemHelper.toolItems.size() > ToolHelper.DEFAULT_TYPE_SIZE)
+        {
+            for (int i=ToolHelper.DEFAULT_TYPE_SIZE; i < ItemHelper.toolItems.size(); i++)
+            {
+                GameRegistry.addRecipe(makeNewSpudRecipe(i));
+            }
+        }
     } // end AddSupplementalToolRecipes()
     
     
@@ -69,9 +79,10 @@ public class RecipeHelper
      */
     public static ShapelessOreRecipe makeNewSplitBarkRecipe(int blockIndex)
     {
-        return new ShapelessOreRecipe(
-                new ItemStack(ItemHelper.getBarkItem(blockIndex), 9),
-                BlockHelper.INSTANCE.getOreDictName(blockIndex));
+        ItemStack product = new ItemStack(ItemHelper.getBarkItem(blockIndex), 9);
+        LogHelper.finer("Created recipe for " + product.getDisplayName());
+        return new ShapelessOreRecipe( product,
+                                       BlockHelper.INSTANCE.getOreDictName(blockIndex));
     } // end makeNewSplitBarkRecipe()
     
     
@@ -87,6 +98,7 @@ public class RecipeHelper
         int meta = BlockHelper.INSTANCE.getMetadata(blockIndex);
         ItemStack barkBlockStack = 
                 new ItemStack(ItemHelper.getBarkBlock(barkBlockIndex), 1, meta);
+        LogHelper.finer("Created recipe for " + barkBlockStack.getDisplayName());
         return new ShapedOreRecipe(barkBlockStack,
                             new Object[] { blockPattern, 'X',
                             BarkHelper.INSTANCE.getOreDictName(blockIndex) });
@@ -103,9 +115,10 @@ public class RecipeHelper
                                                              int toolIndex)
     {
         int meta = BarkHelper.INSTANCE.getMetadata(barkIndex);
-        return new ShapelessOreRecipe(
-                        new ItemStack(ItemHelper.getBarkItem(barkIndex), 
-                                      ToolHelper.INSTANCE.getHarvestLevel(toolIndex) + 3), 
+        ItemStack product = new ItemStack(ItemHelper.getBarkItem(barkIndex), 
+                                          ToolHelper.INSTANCE.getHarvestLevel(toolIndex) + 3);
+        LogHelper.finer("Created recipe for " + product.getDisplayName());
+        return new ShapelessOreRecipe( product, 
                         new ItemStack(ItemHelper.getToolItem(toolIndex), 
                                        1, 
                                        OreDictionary.WILDCARD_VALUE),
@@ -132,8 +145,9 @@ public class RecipeHelper
         else {
             return null;
         }
-        return new ShapedOreRecipe( 
-                new ItemStack(ItemHelper.getToolItem(toolIndex)),
+        ItemStack product = new ItemStack(ItemHelper.getToolItem(toolIndex));
+        LogHelper.finer("Created recipe for " + product.getDisplayName());
+        return new ShapedOreRecipe( product,
                                 new Object[] { spudPattern, 
                                                '#', "stickWood", 
                                                'X', recipeItem });  
