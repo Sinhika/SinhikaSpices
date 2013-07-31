@@ -1,0 +1,25 @@
+Concepts
+========
+Sinhika's Spices started out to be about harvesting spices in the wild. 
+I started out designing a mechanism to peel bark from logs to get cinnamon bark (sticks).
+So what do you do with bark?
+
+All barks - bundle up into blocks like wood, only more fragile
+Junglewood - Cinnamon sticks
+Birch - paper, canoes, birch beer
+Spruce - extract pitch
+Oak - nothing special
+
+Junglewood to be later replaced with cinnamon trees.
+Be sure to notice other mods that have registered tool materials, 
+and make bark spuds from other tool materials.
+Other log types should each yield a bark, if found.
+
+After bark, what then?
+
+Nutmeg & mace -- a rare nut.
+Peppercorn - fruit of a vine.
+chili - fruit of the chili pepper
+various herbs - bushes & grasses.
+
+Recipes that use spices?  Cooperate with Pam's HarvestCraft if possible.
