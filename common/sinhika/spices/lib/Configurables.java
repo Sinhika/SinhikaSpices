@@ -31,10 +31,12 @@ public class Configurables
     public static String keyBarkItemID [] = new String[BarkHelper.INSTANCE.size()];
     public static ArrayList<String> keyToolItemID;
     public static String keySpiceItemID [] = new String[SpiceHelper.INSTANCE.size()];
+    public static String keyCanoeItemID;
     
     public static Level loggingLevel;
     public static int barkBlockID;    // multi-block bark blockID
     public static int barkItemID[];   // barkItem itemIDs.
     public static ArrayList<Integer>toolItemID;   // spud tool itemIDs.
     public static int spiceItemID[];    // spiceItem ids
+    public static int canoeItemID;
 } // end class

@@ -15,8 +15,10 @@ import sinhika.spices.Spices;
 import sinhika.spices.block.BarkItemBlock;
 import sinhika.spices.block.BlockBark;
 import sinhika.spices.item.ItemBark;
+import sinhika.spices.item.ItemCanoe;
 import sinhika.spices.item.ItemSpud;
 import sinhika.spices.lib.Configurables;
+import sinhika.spices.lib.ModInfo;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
@@ -34,6 +36,7 @@ public class ItemHelper
             ToolHelper.INSTANCE.size());
     public static ArrayList<Item> spiceItems = 
             new ArrayList<Item>(SpiceHelper.INSTANCE.size());
+    public static Item canoeItem;
     
     private static HashMap<String, Integer> spiceLookup =
             new HashMap<String, Integer>(SpiceHelper.INSTANCE.size());
@@ -54,6 +57,19 @@ public class ItemHelper
         initToolItems();
         // init spice items
         initSpiceItems();
+        
+        // misc.
+        canoeItem = new ItemCanoe(Configurables.canoeItemID).setUnlocalizedName("birchCanoe");
+        canoeItem.func_111206_d(ModInfo.ID + ":birch_canoe");
+        
+        // set display name -- should already be set by localization file
+        // but set up a makeshift in case it is not.
+        String tagLocale = "item.birchCanoe.name";
+        if (LocalizationHelper.getLocalizedString(tagLocale).isEmpty())
+        {
+            LanguageRegistry.addName(canoeItem, "Birch Canoe");
+        }
+        
     } // end init()
 
     

@@ -74,7 +74,11 @@ public class ConfigHelper
             LogHelper.fine("spiceItemID[" + i + "]=" +  Configurables.keySpiceItemID[i] + "="
                     + Configurables.spiceItemID[i]);
         }
-        
+        Configurables.keyCanoeItemID = "birchCanoeItemID";
+        Configurables.canoeItemID = 
+                config.getItem(Configurables.keyCanoeItemID, 
+                               Configurables.DEFAULT_BASE_ITEMID - (SpiceHelper.INSTANCE.size() + 1)).getInt();
+                
         Configurables.barkItemID = new int[BarkHelper.INSTANCE.size()];
         for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {

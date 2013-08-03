@@ -1,6 +1,7 @@
 package sinhika.spices;
 
 import net.minecraft.creativetab.CreativeTabs;
+import sinhika.spices.entity.EntityCanoe;
 import sinhika.spices.handlers.BarkHelper;
 import sinhika.spices.handlers.BlockHelper;
 import sinhika.spices.handlers.ConfigHelper;
@@ -24,6 +25,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 /**
@@ -76,6 +78,10 @@ public class Spices
         customTabSpices = new SpiceTab();
         spiceCraftingHandler = new CraftingHandler();
         spiceFuelHandler = new FuelHandler();
+        
+        // register entities
+        EntityRegistry.registerModEntity(EntityCanoe.class, "Birch Bark Canoe", 
+                           1, Spices.instance, 80, 3, true);
     } // end preInit()
 
     /**

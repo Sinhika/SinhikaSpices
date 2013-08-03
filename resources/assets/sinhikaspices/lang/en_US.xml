@@ -20,4 +20,5 @@
 	<entry key="tile.spruceBarkBlock.name">Bundle of Spruce Bark</entry>
 	<entry key="tile.birchBarkBlock.name">Bundle of Birch Bark</entry>
 	<entry key="tile.cinnamonBarkBlock.name">Bundle of Cinnamon</entry>	
+	<entry key="item.birchCanoe.name">Birchbark Canoe</entry>
 </properties>
