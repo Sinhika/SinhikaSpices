@@ -1,7 +1,7 @@
 package sinhika.spices.proxy;
 
 import sinhika.spices.entity.EntityCanoe;
-import sinhika.spices.handlers.RenderCanoe;
+import sinhika.spices.render.RenderCanoe;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy

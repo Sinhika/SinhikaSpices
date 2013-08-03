@@ -53,6 +53,17 @@ public class RecipeHelper
                 new ShapelessOreRecipe(
                         new ItemStack(ItemHelper.getSpiceItem("cinnamon")),
                         "woodCinnamonBark"));
+        
+        // birchbark canoe
+        GameRegistry.addRecipe( 
+                new ShapedOreRecipe(
+                        new ItemStack(ItemHelper.canoeItem),
+                        new Object[] {"   ", "x x", "xxx", 'x', "woodBirchBarkBlock"}));
+        // paper
+        GameRegistry.addRecipe(
+                new ShapedOreRecipe(
+                        new ItemStack(Item.paper, 3),
+                        new Object[]{ "xxx", 'x', "woodBirchBark" }));
     } // end addRecipes()
     
     

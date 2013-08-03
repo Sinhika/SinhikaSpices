@@ -1,4 +1,4 @@
-package sinhika.spices.handlers;
+package sinhika.spices.render;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

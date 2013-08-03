@@ -54,12 +54,6 @@ public class ConfigHelper
                         Tags.FMT_MSG_SET_LOGLEVEL, 
                         Configurables.loggingLevel.toString()));
         
-        // get block IDs
-        Configurables.barkBlockID = 
-                config.getBlock(Configurables.KEY_BBID,
-                        Configurables.DEFAULT_BLOCKID, 
-                        LocalizationHelper.getLocalizedString(Tags.COMMENT_BARKBLOCKID)).getInt();
-        LogHelper.fine(Configurables.KEY_BBID + "=" + Configurables.barkBlockID);
 
         // get item IDs
         Configurables.spiceItemID = new int[SpiceHelper.INSTANCE.size()];
@@ -70,15 +64,27 @@ public class ConfigHelper
             // TODO add config comments here.
             Configurables.spiceItemID[i] = 
                     config.getItem(Configurables.keySpiceItemID[i],
-                                   Configurables.DEFAULT_BASE_ITEMID - (i+1)).getInt();
+                                   Configurables.DEFAULT_BASE_ITEMID + i).getInt();
             LogHelper.fine("spiceItemID[" + i + "]=" +  Configurables.keySpiceItemID[i] + "="
                     + Configurables.spiceItemID[i]);
         }
         Configurables.keyCanoeItemID = "birchCanoeItemID";
         Configurables.canoeItemID = 
                 config.getItem(Configurables.keyCanoeItemID, 
-                               Configurables.DEFAULT_BASE_ITEMID - (SpiceHelper.INSTANCE.size() + 1)).getInt();
+                               Configurables.DEFAULT_BASE_ITEMID 
+                               + SpiceHelper.INSTANCE.size() + 1).getInt();
                 
+        
+        // get block IDs
+        Configurables.barkBlockID = 
+                config.getBlock(Configurables.KEY_BBID,
+                        Configurables.DEFAULT_BLOCKID, 
+                        LocalizationHelper.getLocalizedString(Tags.COMMENT_BARKBLOCKID)).getInt();
+        LogHelper.fine(Configurables.KEY_BBID + "=" + Configurables.barkBlockID);
+        
+        // BARK
+        // TODO we might have surprise new bark types because of other mods,
+        // TODO so check what all is in the bark category.
         Configurables.barkItemID = new int[BarkHelper.INSTANCE.size()];
         for (int i = 0; i < BarkHelper.INSTANCE.size(); i++)
         {
@@ -86,8 +92,10 @@ public class ConfigHelper
                     BarkHelper.INSTANCE.getTypeName(i) + Configurables.KEY_BI_ID_STEM;
             
             // TODO add config comments here.
-            Configurables.barkItemID[i] = config.getItem( Configurables.keyBarkItemID[i],
-                    Configurables.DEFAULT_BASE_ITEMID + i).getInt();
+            Configurables.barkItemID[i] = 
+                    config.getItem(Configurables.CATEGORY_BARK, 
+                                   Configurables.keyBarkItemID[i],
+                                   Configurables.DEFAULT_BASE_BARKID + i).getInt();
             LogHelper.fine("barkItemID[" + i + "]=" +  Configurables.keyBarkItemID[i] + "="
                     + Configurables.barkItemID[i]);
         }
@@ -112,7 +120,7 @@ public class ConfigHelper
             Configurables.toolItemID.add( 
                     config.getItem(Configurables.CATEGORY_TOOL, 
                                     Configurables.keyToolItemID.get(i),
-                    Configurables.DEFAULT_BASE_ITEMID + BarkHelper.INSTANCE.size() + i)
+                    Configurables.DEFAULT_BASE_TOOLID + i)
                     .getInt());
             LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) + "="
                     + Configurables.toolItemID.get(i));
@@ -131,8 +139,7 @@ public class ConfigHelper
                 Configurables.keyToolItemID.add(k);
                 Configurables.toolItemID.add( 
                     config.getItem(Configurables.CATEGORY_TOOL, k,
-                                   Configurables.DEFAULT_BASE_ITEMID 
-                                    + BarkHelper.INSTANCE.size() + i).getInt());
+                                   Configurables.DEFAULT_BASE_TOOLID + i).getInt());
                 LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) 
                         + "=" + Configurables.toolItemID.get(i));                
                 i++;
@@ -150,11 +157,12 @@ public class ConfigHelper
     public static int addTool(EnumToolMaterial tm)
     {
         int i = ToolHelper.INSTANCE.materialsInUse.get(tm);
-        Configurables.keyToolItemID.add(ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM);
+        Configurables.keyToolItemID.add(
+                ToolHelper.INSTANCE.getTypeName(i) + Configurables.KEY_TOOL_ID_STEM);
         Configurables.toolItemID.add( 
                 config.getItem(Configurables.CATEGORY_TOOL, 
                                 Configurables.keyToolItemID.get(i),
-                Configurables.DEFAULT_BASE_ITEMID + BarkHelper.INSTANCE.size() + i).getInt());
+                Configurables.DEFAULT_BASE_TOOLID + i).getInt());
         LogHelper.fine("toolItem[" + i + "]=" + Configurables.keyToolItemID.get(i) 
                 + "=" + Configurables.toolItemID.get(i));
         config.save();

@@ -17,8 +17,11 @@ import sinhika.spices.handlers.SpiceHelper;
 public class Configurables
 {
     public static final String CATEGORY_TOOL = "tools";
+    public static final String CATEGORY_BARK = "bark";
     
-    public static final int DEFAULT_BASE_ITEMID = 18105;
+    public static final int DEFAULT_BASE_ITEMID = 18100;
+    public static final int DEFAULT_BASE_BARKID = 18200;
+    public static final int DEFAULT_BASE_TOOLID = 18300;
     public static final int DEFAULT_BLOCKID = 3301;
     public static final String DEFAULT_LOGLEVEL_S = "INFO";
             
