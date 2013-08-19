@@ -7,7 +7,7 @@ So what do you do with bark?
 All barks - bundle up into blocks like wood, only more fragile
 Junglewood - Cinnamon sticks
 Birch - paper, canoes, birch beer
-Spruce - extract pitch
+Spruce - extract pitch which can make torches
 Oak - nothing special
 
 Junglewood to be later replaced with cinnamon trees.
