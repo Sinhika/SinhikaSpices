@@ -5,7 +5,6 @@ import sinhika.bark.entity.EntityCanoe;
 import sinhika.bark.handlers.BarkHelper;
 import sinhika.bark.handlers.BlockHelper;
 import sinhika.bark.handlers.ConfigHelper;
-import sinhika.bark.handlers.CraftingHandler;
 import sinhika.bark.handlers.FuelHandler;
 import sinhika.bark.handlers.ItemHelper;
 import sinhika.bark.handlers.LocalizationHelper;
@@ -45,7 +44,7 @@ public class Bark
     /** custom creative-mode tab object */
     public static CreativeTabs customTabSpices;
   
-    private static CraftingHandler spiceCraftingHandler;
+ //   private static CraftingHandler spiceCraftingHandler;
     private static FuelHandler spiceFuelHandler;
     
     /** Says where the client and server 'proxy' code is loaded. */
@@ -76,7 +75,6 @@ public class Bark
 
         // create handlers
         customTabSpices = new SpiceTab();
-        spiceCraftingHandler = new CraftingHandler();
         spiceFuelHandler = new FuelHandler();
         
         // register entities
@@ -100,7 +98,6 @@ public class Bark
         SpiceTab.init(ItemHelper.getBarkItem(3));
      
         // register handlers
-        GameRegistry.registerCraftingHandler(spiceCraftingHandler);
         GameRegistry.registerFuelHandler(spiceFuelHandler);
         
         RecipeHelper.addRecipes();

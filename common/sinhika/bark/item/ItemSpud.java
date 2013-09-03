@@ -15,6 +15,7 @@ import net.minecraft.item.EnumToolMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.StatList;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;
@@ -37,6 +38,45 @@ public class ItemSpud extends ItemTool
     {
         super(par1, 2.0F, par3EnumToolMaterial, blocksEffectiveAgainst);
         setCreativeTab(Bark.customTabSpices);
+        setNoRepair();  // because otherwise, repair dupes tool.
+    }
+
+    /* (non-Javadoc)
+     * @see net.minecraft.item.Item#hasContainerItem()
+     */
+    @Override
+    public boolean hasContainerItem()
+    {
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see net.minecraft.item.Item#getContainerItemStack(net.minecraft.item.ItemStack)
+     */
+    @Override
+    public ItemStack getContainerItemStack(ItemStack itemStack)
+    {
+        // copy our item.
+        ItemStack returnItem = new ItemStack(itemStack.getItem(), 1, itemStack.getItemDamage()+1);
+        
+        // is spud enchanted? If so, must copy enchantments to
+        // new spud(s)
+        if (itemStack.isItemEnchanted())
+        {
+            NBTTagCompound nbtcompound = itemStack.getTagCompound();
+            returnItem.setTagCompound(nbtcompound);
+        }        
+  
+        return returnItem;
+    }
+
+    /* (non-Javadoc)
+     * @see net.minecraft.item.Item#doesContainerItemLeaveCraftingGrid(net.minecraft.item.ItemStack)
+     */
+    @Override
+    public boolean doesContainerItemLeaveCraftingGrid(ItemStack par1ItemStack)
+    {
+        return false;
     }
 
     /**
