@@ -60,7 +60,7 @@ public class ItemHelper
         
         // misc.
         canoeItem = new ItemCanoe(Configurables.canoeItemID).setUnlocalizedName("birchCanoe");
-        canoeItem.func_111206_d(ModInfo.ID + ":birch_canoe");
+        canoeItem.setTextureName(ModInfo.ID + ":birch_canoe");
         
         // set display name -- should already be set by localization file
         // but set up a makeshift in case it is not.
@@ -122,7 +122,7 @@ public class ItemHelper
             // set unlocalized name tag
             barkItem.setUnlocalizedName(BarkHelper.INSTANCE.getName(i));
             // set icon string
-            barkItem.func_111206_d(BarkHelper.INSTANCE.getTexture(i));
+            barkItem.setTextureName(BarkHelper.INSTANCE.getTexture(i));
 
             // set display name -- should already be set by localization file
             // but set up a makeshift in case it is not.
@@ -162,7 +162,7 @@ public class ItemHelper
             // set unlocalized name tag
             spiceItem.setUnlocalizedName(SpiceHelper.INSTANCE.getName(i));
             // set icon string
-            spiceItem.func_111206_d(SpiceHelper.INSTANCE.getTexture(i));
+            spiceItem.setTextureName(SpiceHelper.INSTANCE.getTexture(i));
 
             // set display name -- should already be set by localization file
             // but set up a makeshift in case it is not.
@@ -239,7 +239,7 @@ public class ItemHelper
         // set unlocalized name tag
         toolItem.setUnlocalizedName(ToolHelper.INSTANCE.getName(toolIndex));
         // set icon string
-        toolItem.func_111206_d(ToolHelper.INSTANCE.getTexture(toolIndex));
+        toolItem.setTextureName(ToolHelper.INSTANCE.getTexture(toolIndex));
 
         // set display name -- should already be set by localization file
         // but set up a makeshift in case it is not.

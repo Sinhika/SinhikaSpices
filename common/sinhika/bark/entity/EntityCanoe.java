@@ -14,20 +14,19 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 /**
- * This whole class is a cut & paste of EntityBoat, because EntityBoat makes
+ * Too much of this class is a cut & paste of EntityBoat, because EntityBoat makes
  * all its internal fields private, and thus not inheritable. Bad design, Mojang!!
  * 
  * @author Sinhika
  *
  */
-public class EntityCanoe extends Entity
+public class EntityCanoe extends EntityBoat
 {
     private boolean field_70279_a;
     private double speedMultiplier;
@@ -54,47 +53,6 @@ public class EntityCanoe extends Entity
         this.yOffset = this.height / 2.0F;
     }
 
-    /**
-     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-     * prevent them from trampling crops
-     */
-    protected boolean canTriggerWalking()
-    {
-        return false;
-    }
-
-    protected void entityInit()
-    {
-        this.dataWatcher.addObject(17, new Integer(0));
-        this.dataWatcher.addObject(18, new Integer(1));
-        this.dataWatcher.addObject(19, new Float(0.0F));
-    }
-
-    /**
-     * Returns a boundingBox used to collide the entity with other entities and blocks. This enables the entity to be
-     * pushable on contact, like boats or minecarts.
-     */
-    public AxisAlignedBB getCollisionBox(Entity par1Entity)
-    {
-        return par1Entity.boundingBox;
-    }
-
-    /**
-     * returns the bounding box for this entity
-     */
-    public AxisAlignedBB getBoundingBox()
-    {
-        return this.boundingBox;
-    }
-
-    /**
-     * Returns true if this entity should push and be pushed by other entities when colliding.
-     */
-    public boolean canBePushed()
-    {
-        return true;
-    }
-
     public EntityCanoe(World par1World, double par2, double par4, double par6)
     {
         this(par1World);
@@ -107,15 +65,7 @@ public class EntityCanoe extends Entity
         this.prevPosZ = par6;
     }
 
-    /**
-     * Returns the Y offset from the entity's position for any entity riding this one.
-     */
-    public double getMountedYOffset()
-    {
-        return (double)this.height * 0.0D - 0.30000001192092896D;
-    }
-
-    /**
+   /**
      * Called when the entity is attacked.
      */
     public boolean attackEntityFrom(DamageSource par1DamageSource, float par2)
@@ -156,27 +106,6 @@ public class EntityCanoe extends Entity
     }
 
     @SideOnly(Side.CLIENT)
-
-    /**
-     * Setups the entity to do the hurt animation. Only used by packets in multiplayer.
-     */
-    public void performHurtAnimation()
-    {
-        this.setForwardDirection(-this.getForwardDirection());
-        this.setTimeSinceHit(10);
-        this.setDamageTaken(this.getDamageTaken() * 11.0F);
-    }
-
-    /**
-     * Returns true if other Entities should be prevented from moving through this Entity.
-     */
-    public boolean canBeCollidedWith()
-    {
-        return !this.isDead;
-    }
-
-    @SideOnly(Side.CLIENT)
-
     /**
      * Sets the position and rotation. Only difference from the other one is no bounding on the rotation. Args: posX,
      * posY, posZ, yaw, pitch
@@ -229,7 +158,7 @@ public class EntityCanoe extends Entity
      */
     public void onUpdate()
     {
-        super.onUpdate();
+    	this.onEntityUpdate();
 
         if (this.getTimeSinceHit() > 0)
         {
@@ -485,88 +414,8 @@ public class EntityCanoe extends Entity
         }
     }
 
-    /**
-     * (abstract) Protected helper method to write subclass entity data to NBT.
-     */
-    protected void writeEntityToNBT(NBTTagCompound par1NBTTagCompound) {}
-
-    /**
-     * (abstract) Protected helper method to read subclass entity data from NBT.
-     */
-    protected void readEntityFromNBT(NBTTagCompound par1NBTTagCompound) {}
-
-    @SideOnly(Side.CLIENT)
-    public float getShadowSize()
-    {
-        return 0.0F;
-    }
-
-    public boolean func_130002_c(EntityPlayer par1EntityPlayer)
-    {
-        if (this.riddenByEntity != null && this.riddenByEntity instanceof EntityPlayer && this.riddenByEntity != par1EntityPlayer)
-        {
-            return true;
-        }
-        else
-        {
-            if (!this.worldObj.isRemote)
-            {
-                par1EntityPlayer.mountEntity(this);
-            }
-
-            return true;
-        }
-    }
-
-    /**
-     * Sets the damage taken from the last hit.
-     */
-    public void setDamageTaken(float par1)
-    {
-        this.dataWatcher.updateObject(19, Float.valueOf(par1));
-    }
-
-    /**
-     * Gets the damage taken from the last hit.
-     */
-    public float getDamageTaken()
-    {
-        return this.dataWatcher.func_111145_d(19);
-    }
-
-    /**
-     * Sets the time to count down from since the last time entity was hit.
-     */
-    public void setTimeSinceHit(int par1)
-    {
-        this.dataWatcher.updateObject(17, Integer.valueOf(par1));
-    }
-
-    /**
-     * Gets the time since the last hit.
-     */
-    public int getTimeSinceHit()
-    {
-        return this.dataWatcher.getWatchableObjectInt(17);
-    }
-
-    /**
-     * Sets the forward direction of the entity.
-     */
-    public void setForwardDirection(int par1)
-    {
-        this.dataWatcher.updateObject(18, Integer.valueOf(par1));
-    }
-
-    /**
-     * Gets the forward direction of the entity.
-     */
-    public int getForwardDirection()
-    {
-        return this.dataWatcher.getWatchableObjectInt(18);
-    }
-
-    @SideOnly(Side.CLIENT)
+   
+      @SideOnly(Side.CLIENT)
     public void func_70270_d(boolean par1)
     {
         this.field_70279_a = par1;

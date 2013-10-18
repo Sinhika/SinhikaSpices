@@ -31,7 +31,7 @@ public class BlockBark extends Block
         setStepSound(Block.soundWoodFootstep);
         setHardness(1.5F);
         setUnlocalizedName("barkBlock");
-        func_111022_d("log");
+        setTextureName("log");
         BlockBark.setBurnProperties(this.blockID, 5, 5);
      }
 

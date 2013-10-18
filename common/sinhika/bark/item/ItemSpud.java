@@ -160,7 +160,7 @@ public class ItemSpud extends ItemTool
     @SideOnly(Side.CLIENT)
     public void registerIcons(IconRegister iconRegister)
     {
-        itemIcon = iconRegister.registerIcon(func_111208_A());
+        itemIcon = iconRegister.registerIcon(getIconString());
     } // end registerIcons()
 
 } // class

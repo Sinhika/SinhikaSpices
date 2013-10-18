@@ -1,13 +1,13 @@
 [
 {
-      "modid": "sinhikasbark",
+      "modid": "sinhikabark",
       "name": "Sinhika's Bark",
       "description": "Adding harvestable tree bark, tools, and recipes that use it.",
       "version": "@VERSION@",
       "credits": 
 "Created by Sinhika, inspired by BeckyH, some convenience code borrowed from Pahimar's tutorials and EE3 mod",
       "logoFile": "/assets/sinhikabark/textures/cinnamon_sticks.png",
-      "mcversion": "1.6.2",
+      "mcversion": "1.6.4",
       "url": "https://github.com/Sinhika/SinhikaSpices",
       "updateUrl": "",
       "authors": [ "Sinhika" ],

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Sinhika's Bark" default="build" basedir="/Projects/mc_mod_src/SinhikaSpices">
+<project name="Sinhika's Bark" default="build" basedir="/Projects/Minecraft/mc_mod_src/SinhikaSpices">
 	<property file="buildfiles/build.properties" prefix="build" />
 	<property file="buildfiles/build_number.properties" prefix="build_number" />
 	
