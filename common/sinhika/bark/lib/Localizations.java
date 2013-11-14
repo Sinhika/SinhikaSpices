@@ -7,6 +7,6 @@ package sinhika.bark.lib;
  */
 public class Localizations
 {
-    private final static String LANG_RESOURCE_LOCATION = "/assets/sinhikaspices/lang/";
+    private final static String LANG_RESOURCE_LOCATION = "/assets/sinhikabark/lang/";
     public static String[] localeFiles = { LANG_RESOURCE_LOCATION + "en_US.xml" };
 }
