@@ -110,6 +110,7 @@ public class Bark
         LogHelper.setLevel(Configurables.loggingLevel);
         
         // Add extras
+        ModInfo.findMods();
         ToolHelper.INSTANCE.addSupplementalTools();
         ItemHelper.addSupplementalToolItems();
         RecipeHelper.AddSupplementalToolRecipes();
