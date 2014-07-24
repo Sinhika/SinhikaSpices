@@ -16,7 +16,7 @@ import sinhika.bark.lib.ModInfo;
 public class RenderCanoe extends RenderBoat
 {
     private static final ResourceLocation textureResource 
-    = new ResourceLocation(ModInfo.ID, "/textures/entity/birch_canoe.png");
+    = new ResourceLocation(ModInfo.ID, "textures/entity/birch_canoe.png");
 
     /** instance of ModelBoat for rendering */
     protected ModelBase modelBoat;
