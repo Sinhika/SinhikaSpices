@@ -1,2 +1,6 @@
 *.jar
 /bin
+
+*.classpath
+*.project
+buildfiles/build_number.properties
